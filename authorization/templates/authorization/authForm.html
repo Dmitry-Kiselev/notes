@@ -3,12 +3,10 @@
 {% block content %}
     {% load bootstrap_tags %}
     <div ng-controller="UserDataController">
-        <div class="modal fade" tabindex="-1" role="dialog" id="authModal">
+        <div class="modal fade" tabindex="-1" role="dialog" id="authModal" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Login or register</h4>
                     </div>
                     <form action="{% url 'register' %}" method="post" id="registration_form">
