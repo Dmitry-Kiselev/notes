@@ -17,7 +17,7 @@ def auth(request):
             else:
                 return JsonResponse({'has_error': True, 'errors': registration_form.error_messages})
         else:
-            login_form = LoginForm(data)
+            login_form = LoginForm(data=data)
             if login_form.is_valid():
                 login(request, login_form.get_user())
                 return JsonResponse({'response': 'You are logged in'})
