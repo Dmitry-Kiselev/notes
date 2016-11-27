@@ -9,7 +9,7 @@ def auth(request):
     login_form, registration_form = False, False
     if request.method == "POST":
         data = json.loads(request.body.decode("utf-8"))
-        if "email" in data: # some condition to distinguish between login and registration form
+        if data.get('email'): # some condition to distinguish between login and registration form
             registration_form = RegistrationForm(data)
             if registration_form.is_valid():
                 registration_form.save()
