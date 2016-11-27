@@ -9,7 +9,7 @@
                     <div class="modal-header">
                         <h4 class="modal-title">Login or register</h4>
                     </div>
-                    <form action="{% url 'register' %}" method="post" id="registration_form">
+                    <form ng-submit="submitForm()">
                         <div class="modal-body">
                             <ul class="nav nav-tabs">
                                 <li><a href="#tab1" data-toggle="tab">Login</a></li>
@@ -22,11 +22,21 @@
                                 <div class="tab-pane" id="tab2">
                                     {{ registration_form|as_bootstrap }}
                                 </div>
+                                <div class="alert alert-success alert-dismissible" ng-if="userdata.response">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close"
+                                    >&times;</a>
+                                    {[{userdata.response}]}
+                                </div>
+                                <div class="alert alert-danger alert-dismissible" ng-if="userdata.errors"
+                                     ng-repeat="error in userdata.errors">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close"
+                                    >&times;</a>
+                                    {[{error}]}
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Submit</button>
+                            <input class="btn btn-primary" type="submit"/>
                         </div>
                     </form>
                 </div><!-- /.modal-content -->
