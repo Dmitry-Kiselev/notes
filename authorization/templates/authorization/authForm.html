@@ -1,0 +1,38 @@
+{% extends "authorization/base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+    {% load bootstrap_tags %}
+    <div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="authModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Login or register</h4>
+                    </div>
+                    <form action="{% url 'register' %}" method="post" id="registration_form">
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li><a href="#tab1" data-toggle="tab">Login</a></li>
+                                <li><a href="#tab2" data-toggle="tab">Registration</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab1">
+                                    {{ login_form|as_bootstrap }}
+                                </div>
+                                <div class="tab-pane" id="tab2">
+                                    {{ registration_form|as_bootstrap }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+{% endblock %}
