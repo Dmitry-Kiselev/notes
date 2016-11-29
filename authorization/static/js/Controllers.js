@@ -2,7 +2,7 @@
 
 angular.module('authApp')
 
-    .controller('UserDataController', function ($scope, $http) {
+    .controller('UserDataController', function ($scope, $http, $window) {
 
         function getCookie(name) {
             var cookieValue = null;
@@ -45,6 +45,9 @@ angular.module('authApp')
                                 Materialize.toast($scope.userdata.errors[error], 4000, 'rounded'); // 4000 is the duration of the toast
                             }
 
+                        }
+                        else {
+                            $window.location = '/';
                         }
                         $scope.userdata.response = response.data.response;
                     }
