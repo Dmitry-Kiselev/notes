@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from .forms import RegistrationForm, LoginForm
 import json
+
 from django.contrib.auth import login, authenticate
+from django.http import JsonResponse
+from django.shortcuts import render
+
+from .forms import RegistrationForm, LoginForm
 
 
 def auth(request):
