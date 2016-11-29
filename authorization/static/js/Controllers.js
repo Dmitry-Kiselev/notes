@@ -2,7 +2,7 @@
 
 angular.module('authApp')
 
-    .controller('UserDataController', function ($scope, $http, $location) {
+    .controller('UserDataController', function ($scope, $http) {
 
         function getCookie(name) {
             var cookieValue = null;
@@ -35,10 +35,16 @@ angular.module('authApp')
                 .then(
                     function (response) {
                         //redirecting or something else
-                        $scope.userdata.email = '';  // to choose correct action in view, but save username
+                        $scope.userdata = {};  // to choose correct action in view
                         // after registration to provide friendly login
                         if (response.data.has_error) {
                             $scope.userdata.errors = response.data.errors;
+
+                            for (var error in $scope.userdata.errors) {
+                                // Materialize.toast(message, displayLength, className, completeCallback);
+                                Materialize.toast($scope.userdata.errors[error], 4000, 'rounded'); // 4000 is the duration of the toast
+                            }
+
                         }
                         $scope.userdata.response = response.data.response;
                     }
@@ -46,8 +52,8 @@ angular.module('authApp')
         };
 
         angular.element(document).ready(function () {
-            angular.element('#authModal').modal('show');
+            angular.element('#authModal').modal({dismissible: false});
+            angular.element('#authModal').modal('open');
+            $('ul.tabs').tabs();
         });
-
-
     });
