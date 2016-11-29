@@ -1,46 +1,32 @@
 {% extends "authorization/base.html" %}
 {% block title %}Register{% endblock %}
 {% block content %}
-    {% load bootstrap_tags %}
+    {% load material_form %}
     <div ng-controller="UserDataController">
-        <div class="modal fade" tabindex="-1" role="dialog" id="authModal" data-backdrop="static">
-            <div class="modal-dialog" role="document">
+        <!-- Modal Structure -->
+        <div id="authModal" class="modal modal-fixed-footer">
+            <form ng-submit="submitForm()">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Login or register</h4>
-                    </div>
-                    <form ng-submit="submitForm()" novalidate>
-                        <div class="modal-body">
-                            <ul class="nav nav-tabs">
-                                <li><a href="#tab1" data-toggle="tab">Login</a></li>
-                                <li><a href="#tab2" data-toggle="tab">Registration</a></li>
+                    <h4>Login or register</h4>
+                    <div class="row">
+                        <div class="col s12">
+                            <ul class="tabs">
+                                <li class="tab col s3"><a href="#register">Registration</a></li>
+                                <li class="tab col s3"><a class="active" href="#login">Log in</a></li>
                             </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab1">
-                                    {{ login_form|as_bootstrap }}
-                                </div>
-                                <div class="tab-pane" id="tab2">
-                                    {{ registration_form|as_bootstrap }}
-                                </div>
-                                <div class="alert alert-success alert-dismissible" ng-if="userdata.response">
-                                    <a href="#" class="close" data-dismiss="alert" aria-label="close"
-                                    >&times;</a>
-                                    {[{userdata.response}]}
-                                </div>
-                                <div class="alert alert-danger alert-dismissible" ng-if="userdata.errors"
-                                     ng-repeat="error in userdata.errors">
-                                    <a href="#" class="close" data-dismiss="alert" aria-label="close"
-                                    >&times;</a>
-                                    {[{error}]}
-                                </div>
-                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <input class="btn btn-primary" type="submit"/>
+                        <div id="register" class="col s12">
+                            {% form form=registration_form %}{% endform %}
                         </div>
-                    </form>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                        <div id="login" class="col s12">
+                            {% form form=login_form %}{% endform %}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input class="modal-action waves-effect waves-green btn-flat" type="submit"/>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}
