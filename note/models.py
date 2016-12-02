@@ -18,7 +18,7 @@ class Note(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField()
     attachment = models.FileField()
-    color = models.CharField(choices=colors)
+    color = models.CharField(choices=colors, max_length=20)
 
 
 class Label(models.Model):
