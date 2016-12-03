@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'material',
     'material.admin',
     'material.frontend',
+    'rest_framework',
 ]
 
 MIDDLEWARE_CLASSES = [
