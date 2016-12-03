@@ -2,10 +2,12 @@ import json
 
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework import status
 
 from .forms import RegistrationForm, LoginForm
 
@@ -24,7 +26,8 @@ def auth(request, format=None):
                                             password=data['password1'],
                                             )
                     login(request, new_user)
-                    return Response({'notes': reverse('note:notes_list', request=request, format=format)})
+                    #return Response({'notes': reverse('note:notes_list', request=request, format=format)})
+                    return Response(status=status.HTTP_200_OK)
                 else:
                     return Response({'has_error': True, 'errors': registration_form.error_messages})
             else:
@@ -41,4 +44,5 @@ def auth(request, format=None):
         }
         return render(request, 'authorization/authForm.html', obj)
     else:
-        return Response({'notes': reverse('note:notes_list', request=request, format=format)})
+        #return Response({'notes': reverse('note:notes_list', request=request, format=format)})
+        return HttpResponseRedirect('/')
