@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework import permissions
 
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
@@ -13,6 +14,8 @@ class NoteList(APIView):
     """
     List all snippets, or create a new snippet.
     """
+
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
         notes = Note.objects.filter(pk=request.user.pk)
@@ -34,6 +37,8 @@ class NoteDetails(APIView):
     """
     Retrieve, update or delete a snippet instance.
     """
+
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
         try:
