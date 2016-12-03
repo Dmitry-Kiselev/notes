@@ -8,6 +8,7 @@ from django.core.exceptions import PermissionDenied
 
 from .models import Note
 from .serializers import NoteSerializer
+from .permissions import IsOwnerOrDenial
 
 
 class NoteList(APIView):
@@ -15,7 +16,7 @@ class NoteList(APIView):
     List all snippets, or create a new snippet.
     """
 
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
 
     def get(self, request):
         notes = Note.objects.filter(pk=request.user.pk)
@@ -38,7 +39,7 @@ class NoteDetails(APIView):
     Retrieve, update or delete a snippet instance.
     """
 
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
 
     def get_object(self, pk):
         try:
