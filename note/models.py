@@ -16,8 +16,8 @@ colors = (
 class Note(models.Model):
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField()
-    attachment = models.FileField()
+    image = models.ImageField(blank=True, null=True, upload_to='images/')
+    attachment = models.FileField(blank=True, null=True, upload_to='files/')
     color = models.CharField(choices=colors, max_length=20)
 
 
