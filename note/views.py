@@ -18,7 +18,7 @@ class NoteList(ListCreateAPIView):
         return Note.objects.filter(author=self.request.user.pk)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(owner=self.request.user)
 
 
 class NoteDetails(RetrieveUpdateDestroyAPIView):
@@ -29,4 +29,4 @@ class NoteDetails(RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
 
     def get_queryset(self):
-        return Note.objects.filter(author=self.request.user.pk)
+        return Note.objects.filter(owner=self.request.user.pk)
