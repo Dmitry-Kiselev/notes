@@ -8,7 +8,7 @@ from .serializers import NoteSerializer
 
 class NoteList(ListCreateAPIView):
     """
-    List all snippets, or create a new snippet.
+    List all notes, or create a new snippet.
     """
 
     serializer_class = NoteSerializer
@@ -23,7 +23,7 @@ class NoteList(ListCreateAPIView):
 
 class NoteDetails(RetrieveUpdateDestroyAPIView):
     """
-    Retrieve, update or delete a snippet instance.
+    Retrieve, update or delete a note instance.
     """
     serializer_class = NoteSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
