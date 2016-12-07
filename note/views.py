@@ -8,14 +8,14 @@ from .serializers import NoteSerializer
 
 class NoteList(ListCreateAPIView):
     """
-    List all notes, or create a new snippet.
+    List all notes, or create a new note.
     """
 
     serializer_class = NoteSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
 
     def get_queryset(self):
-        return Note.objects.filter(pk=self.request.user.pk)
+        return Note.objects.filter(author=self.request.user.pk)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -29,4 +29,4 @@ class NoteDetails(RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
 
     def get_queryset(self):
-        return Note.objects.filter(pk=self.request.user.pk)
+        return Note.objects.filter(author=self.request.user.pk)
