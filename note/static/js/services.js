@@ -10,4 +10,7 @@ angular.module('noteApp')
         this.getNotes = function () {
             return $resource(baseURL + "notes/:id", null, {'update': {method: 'PUT'}});
         };
+        this.getLabels = function () {
+            return $resource(baseURL + "labels/:id", null, {'update': {method: 'PUT'}});
+        }
     }]);
