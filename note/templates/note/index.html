@@ -36,7 +36,7 @@
     </ul>
 
     <div class="container">
-            <nav>
+            <nav class="deep-purple darken-1">
         <div class="nav-wrapper row">
             <div class="brand-logo">
                 <div class="col s2 offset-s2">
@@ -46,9 +46,9 @@
                     <a href="/" class="">Notes</a>
                 </div>
             </div>
-            <form class="col s6 offset-s3">
+            <form class="col s6 offset-s3 deep-purple darken-2">
                 <div class="input-field">
-                    <input id="search" type="search" required>
+                    <input id="search" type="search" required ng-model="searchText">
                     <label for="search"><i class="material-icons">search</i></label>
                     <i class="material-icons">close</i>
                 </div>
@@ -60,7 +60,7 @@
         </div>
     </nav>
         <div class="row">
-            <div ng-repeat="note in notes">
+            <div ng-repeat="note in notes | filter:searchText">
                 <div class="col s12 m4">
                     <div class="card {[{note.color}]}">
                         <div class="card-image" ng-if="note.image">
