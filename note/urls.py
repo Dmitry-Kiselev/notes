@@ -20,6 +20,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     url(r'^notes/$', views.NoteList.as_view(), name='notes_list'),
     url(r'^notes/(?P<pk>[0-9]+)$', views.NoteDetails.as_view(), name='note_detail'),
+    url(r'^labels/', views.LabelList.as_view(), name='labels_list'),
+    url(r'^labels/(?P<pk>[0-9]+)$', views.LabelDetails.as_view(), name='label_detail'),
+    url(r'^$', views.index),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
