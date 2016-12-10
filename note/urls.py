@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^notes/(?P<pk>[0-9]+)$', views.NoteDetails.as_view(), name='note_detail'),
     url(r'^labels/', views.LabelList.as_view(), name='labels_list'),
     url(r'^labels/(?P<pk>[0-9]+)$', views.LabelDetails.as_view(), name='label_detail'),
+    url(r'^categories/', views.CategoryList.as_view(), name='categories_list'),
+    url(r'^categories/(?P<pk>[0-9]+)$', views.CategoryDetails.as_view(), name='category_detail'),
     url(r'^$', views.index),
 ]
 
