@@ -53,7 +53,7 @@ angular.module('noteApp')
             $("#sidenav-btn").sideNav();
             // Initialize collapsible (uncomment the line below if you use the dropdown variation)
             //$('.collapsible').collapsible();
-            $scope.notes = noteFactory.getNotes().query(
+            $scope.getNotes = noteFactory.getNotes().query(
                 function (response) {
                     $scope.notes = response;
                     $scope.showNotes = true;
@@ -65,8 +65,16 @@ angular.module('noteApp')
                     $scope.showLabels = true;
                 }
             );
+            $scope.getCategories = noteFactory.getCategories().query(
+                function (response) {
+                    $scope.categories = response;
+                    $scope.showCategories = true;
+                }
+            );
         });
     });
+
+
 angular.module('noteApp').filter('cut', function () {
     return function (value, wordwise, max, tail) {
         if (!value) return '';
