@@ -59,3 +59,7 @@ class LabelDetails(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Label.objects.filter(owner=self.request.user.pk)
+
+
+def index(request):
+    return render(request, 'note/index.html')
