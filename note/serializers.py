@@ -1,10 +1,12 @@
 from rest_framework import serializers
 
-from .models import Note, Label
+from .models import Note, Label, Category, Labelling, Categorization
 
 
 class NoteSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='author.id')
+    owner = serializers.ReadOnlyField(source='owner.id')
+    labels = serializers.ReadOnlyField(source='get_labels')
+    categories = serializers.ReadOnlyField(source='get_categories')
 
     class Meta:
         model = Note
@@ -17,3 +19,29 @@ class LabelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Label
         fields = ('name',)
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.id')
+
+    class Meta:
+        model = Category
+        fields = ('name',)
+
+
+class LabellingSerializer(serializers.ModelSerializer):
+    note = serializers.ReadOnlyField(source='note.id')
+    label = serializers.ReadOnlyField(source='label.id')
+
+    class Meta:
+        model = Labelling
+        fields = '__all__'
+
+
+class CategorizationSerializer(serializers.ModelSerializer):
+    note = serializers.ReadOnlyField(source='note.id')
+    category = serializers.ReadOnlyField(source='category.id')
+
+    class Meta:
+        model = Categorization
+        fields = '__all__'
