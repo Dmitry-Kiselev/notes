@@ -76,5 +76,16 @@ class CategoryList(ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
+class CategoryDetails(RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a label instance.
+    """
+    serializer_class = CategorySerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
+
+    def get_queryset(self):
+        return Category.objects.filter(owner=self.request.user.pk)
+
+
 def index(request):
     return render(request, 'note/index.html')
