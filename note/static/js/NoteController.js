@@ -25,9 +25,9 @@ angular.module('noteApp')
 
         // create a blank object to handle form data.
         $scope.userdata = {};
-        
-        $scope.notes = {};
-        
+
+        $scope.notes = [];
+
         $scope.getNotes = function () {
             return noteFactory.query();
         };
@@ -49,11 +49,44 @@ angular.module('noteApp')
         };
 
         angular.element(document).ready(function () {
+            // Initialize collapse button
+            $("#sidenav-btn").sideNav();
+            // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+            //$('.collapsible').collapsible();
             $scope.notes = noteFactory.getNotes().query(
                 function (response) {
                     $scope.notes = response;
                     $scope.showNotes = true;
                 }
             );
+            $scope.getLabels = noteFactory.getLabels().query(
+                function (response) {
+                    $scope.labels = response;
+                    $scope.showLabels = true;
+                }
+            );
         });
     });
+angular.module('noteApp').filter('cut', function () {
+    return function (value, wordwise, max, tail) {
+        if (!value) return '';
+
+        max = parseInt(max, 10);
+        if (!max) return value;
+        if (value.length <= max) return value;
+
+        value = value.substr(0, max);
+        if (wordwise) {
+            var lastspace = value.lastIndexOf(' ');
+            if (lastspace != -1) {
+                //Also remove . and , so its gives a cleaner result.
+                if (value.charAt(lastspace - 1) == '.' || value.charAt(lastspace - 1) == ',') {
+                    lastspace = lastspace - 1;
+                }
+                value = value.substr(0, lastspace);
+            }
+        }
+
+        return value + (tail || ' …');
+    };
+});
