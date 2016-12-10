@@ -34,14 +34,14 @@
     <ul id="slide-out" class="side-nav">
         <li><a class="subheader">Labels</a></li>
         <ul ng-repeat="label in labels">
-            <li><a href="#!"><i class="material-icons">label</i>{[{label}]}</a></li>
+            <li><a href="#!"><i class="material-icons">label</i>{[{label.name}]}</a></li>
         </ul>
         <li><a href="#">Add new label</a></li>
         <li>
             <div class="divider">Categories</div>
         </li>
         <ul ng-repeat="category in categories">
-            <li><a href="#!"><i class="material-icons">label</i>{[{label}]}</a></li>
+            <li><a href="#!"><i class="material-icons">label</i>{[{label.name}]}</a></li>
         </ul>
         <li><a href="#">Add new category</a></li>
     </ul>
