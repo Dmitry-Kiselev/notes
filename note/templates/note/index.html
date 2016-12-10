@@ -67,7 +67,7 @@
                             <img src="{[{note.image}]}">
                         </div>
                         <div class="card-content">
-                            <p>{[{note.text}]}</p>
+                            <p>{[{note.text | cut:true:100:' ...'}]}</p>
                         </div>
                         <div class="card-action">
                             <a href="#">This is a link</a>
