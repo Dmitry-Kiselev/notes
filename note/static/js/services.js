@@ -12,5 +12,8 @@ angular.module('noteApp')
         };
         this.getLabels = function () {
             return $resource(baseURL + "labels/:id", null, {'update': {method: 'PUT'}});
+        };
+        this.getCategories = function () {
+            return $resource(baseURL + "categories/:id", null, {'update': {method: 'PUT'}});
         }
     }]);
