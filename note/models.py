@@ -20,6 +20,9 @@ class Note(models.Model):
     attachment = models.FileField(blank=True, null=True, upload_to='files/')
     color = models.CharField(choices=colors, max_length=20, default='grey')
 
+    def __str__(self):
+        return self.text[:10]
+
     @property
     def get_labels(self):
         return Labelling.objects.filter(note=self.pk)
@@ -33,11 +36,17 @@ class Label(models.Model):
     name = models.CharField(max_length=20)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=30)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
 class Image(models.Model):
