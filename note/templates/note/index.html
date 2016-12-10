@@ -30,35 +30,36 @@
             <div class="divider">Categories</div>
         </li>
         <ul ng-repeat="category in categories">
-            <li><a href="#!"><i class="material-icons">label</i>{[{label.name}]}</a></li>
+            <li><a href="#!"><i class="material-icons">label</i>{[{category.name}]}</a></li>
         </ul>
         <li><a href="#">Add new category</a></li>
     </ul>
 
     <div class="container">
-            <nav class="deep-purple darken-1">
-        <div class="nav-wrapper row">
-            <div class="brand-logo">
-                <div class="col s2 offset-s2">
-                    <a href="#" data-activates="slide-out" class="" id="sidenav-btn"><i class="material-icons">menu</i></a>
+        <nav class="deep-purple darken-1">
+            <div class="nav-wrapper row">
+                <div class="brand-logo">
+                    <div class="col s2 offset-s2">
+                        <a href="#" data-activates="slide-out" class="" id="sidenav-btn"><i
+                                class="material-icons">menu</i></a>
+                    </div>
+                    <div class="col s6">
+                        <a href="/" class="">Notes</a>
+                    </div>
                 </div>
-                <div class="col s6">
-                    <a href="/" class="">Notes</a>
-                </div>
+                <form class="col s6 offset-s3 deep-purple darken-2">
+                    <div class="input-field">
+                        <input id="search" type="search" required ng-model="searchText">
+                        <label for="search"><i class="material-icons">search</i></label>
+                        <i class="material-icons">close</i>
+                    </div>
+                </form>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{ request.user.username }}<i
+                            class="material-icons right">arrow_drop_down</i></a></li>
+                </ul>
             </div>
-            <form class="col s6 offset-s3 deep-purple darken-2">
-                <div class="input-field">
-                    <input id="search" type="search" required ng-model="searchText">
-                    <label for="search"><i class="material-icons">search</i></label>
-                    <i class="material-icons">close</i>
-                </div>
-            </form>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{ request.user.username }}<i
-                        class="material-icons right">arrow_drop_down</i></a></li>
-            </ul>
-        </div>
-    </nav>
+        </nav>
         <div class="row">
             <div ng-repeat="note in notes | filter:searchText">
                 <div class="col s12 m4">
@@ -68,6 +69,9 @@
                         </div>
                         <div class="card-content">
                             <p>{[{note.text | cut:true:100:' ...'}]}</p>
+                        </div>
+                        <div ng-repeat="label in note.labels" class="collection-item">
+                            <span class="new badge">{[{label}]}</span>
                         </div>
                         <div class="card-action">
                             <a href="#">This is a link</a>
