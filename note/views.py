@@ -1,9 +1,12 @@
 from rest_framework import permissions
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 
-from .models import Note
+from .models import Note, Label, Category, Labelling, Categorization
 from .permissions import IsOwnerOrDenial
-from .serializers import NoteSerializer
+from .serializers import NoteSerializer, LabelSerializer, LabellingSerializer, CategorySerializer, \
+    CategorizationSerializer
+from django.shortcuts import render
 
 
 class NoteList(ListCreateAPIView):
@@ -15,7 +18,7 @@ class NoteList(ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
 
     def get_queryset(self):
-        return Note.objects.filter(author=self.request.user.pk)
+        return Note.objects.filter(owner=self.request.user.pk)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -30,3 +33,18 @@ class NoteDetails(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Note.objects.filter(owner=self.request.user.pk)
+
+
+class LabelList(ListCreateAPIView):
+    """
+    List all labels, or create a new label.
+    """
+
+    serializer_class = LabelSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
+
+    def get_queryset(self):
+        return Label.objects.filter(owner=self.request.user.pk)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
