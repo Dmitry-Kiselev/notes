@@ -1,15 +1,15 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 colors = (
-    ('Red', 'red'),
-    ('Purple', 'purple'),
-    ('Cyan', 'cyan'),
-    ('Amber', 'amber'),
-    ('Grey', 'grey'),
-    ('Indigo', 'indigo'),
-    ('Light green', 'light_green'),
-    ('White', 'white')
+    ('red darken-1', 'red'),
+    ('purple darken-1', 'purple'),
+    ('cyan darken-1', 'cyan'),
+    ('amber accent-1', 'amber'),
+    ('blue-grey darken-1', 'grey'),
+    ('indigo darken-1', 'indigo'),
+    ('light-green darken-1', 'light green'),
+    ('pink darken-1', 'pink')
 )
 
 
@@ -18,7 +18,15 @@ class Note(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(blank=True, null=True, upload_to='images/')
     attachment = models.FileField(blank=True, null=True, upload_to='files/')
-    color = models.CharField(choices=colors, max_length=20, default='white')
+    color = models.CharField(choices=colors, max_length=20, default='grey')
+
+    @property
+    def get_labels(self):
+        return Labelling.objects.filter(note=self.pk)
+
+    @property
+    def get_categories(self):
+        return Categorization.objects.filter(note=self.pk)
 
 
 class Label(models.Model):
@@ -27,7 +35,7 @@ class Label(models.Model):
 
 
 class Category(models.Model):
-    parent = models.ForeignKey('self')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=30)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
