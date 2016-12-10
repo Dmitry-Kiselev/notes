@@ -89,3 +89,11 @@ class CategoryDetails(RetrieveUpdateDestroyAPIView):
 
 def index(request):
     return render(request, 'note/index.html')
+
+
+"""
+class LabelsRelations(CreateModelMixin, DestroyModelMixin):
+    serializer_class = Labelling
+    def get_queryset(self):
+        return Labelling.objects.filter(note=)
+    """
