@@ -48,3 +48,14 @@ class LabelList(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class LabelDetails(RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a label instance.
+    """
+    serializer_class = LabelSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
+
+    def get_queryset(self):
+        return Label.objects.filter(owner=self.request.user.pk)
