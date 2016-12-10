@@ -19,11 +19,18 @@
         <li><a href="{% url 'auth:logout' %}">Logout</a></li>
     </ul>
     <nav>
-        <div class="nav-wrapper">
-            <div class="brand-logo">
+        <div class="nav-wrapper row">
+            <div class="brand-logo offset-s1">
                 <a href="/" class="">Notes</a>
                 <a href="#" data-activates="slide-out" class="" id="sidenav-btn"><i class="material-icons">menu</i></a>
             </div>
+                            <form class="col s6 offset-s3">
+                    <div class="input-field">
+                        <input id="search" type="search" required>
+                        <label for="search"><i class="material-icons">search</i></label>
+                        <i class="material-icons">close</i>
+                    </div>
+                </form>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{ request.user.username }}<i
                         class="material-icons right">arrow_drop_down</i></a></li>
@@ -47,18 +54,6 @@
     </ul>
 
     <div class="container">
-        <p></p>
-        <nav>
-            <div class="nav-wrapper">
-                <form>
-                    <div class="input-field">
-                        <input id="search" type="search" required>
-                        <label for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                    </div>
-                </form>
-            </div>
-        </nav>
         <div class="row">
             <div ng-repeat="note in notes">
                 <div class="col s12 m4">
