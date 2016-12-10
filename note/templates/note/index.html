@@ -20,23 +20,20 @@
     </ul>
     <nav>
         <div class="nav-wrapper">
-            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-            <a href="/" class="brand-logo">Notes</a>
+            <div class="brand-logo">
+                <a href="/" class="">Notes</a>
+                <a href="#" data-activates="slide-out" class="" id="sidenav-btn"><i class="material-icons">menu</i></a>
+            </div>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{ request.user.username }}<i
                         class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a href="#" data-activates="slide-out" class="" id="sidenav-btn"><i class="material-icons">menu</i></a>
+                </li>
             </ul>
         </div>
     </nav>
 
     <ul id="slide-out" class="side-nav">
-        <li>
-            <div class="userView">
-                <div class="background">
-                    <img src="{% static 'images/sidebar.jpeg' %}">
-                </div>
-            </div>
-        </li>
         <li><a class="subheader">Labels</a></li>
         <ul ng-repeat="label in labels">
             <li><a href="#!"><i class="material-icons">label</i>{[{label}]}</a></li>
