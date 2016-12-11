@@ -25,8 +25,8 @@ angular.module('noteApp')
 
         // create a blank object to handle form data.
         $scope.userdata = {};
-
         $scope.notes = [];
+        $scope.curNote = {};
 
         $scope.getNotes = function () {
             return noteFactory.query();
@@ -52,7 +52,7 @@ angular.module('noteApp')
             // Initialize collapse button
             $("#sidenav-btn").sideNav();
             // Initialize collapsible (uncomment the line below if you use the dropdown variation)
-            //$('.collapsible').collapsible();
+            $('#noteModal').modal();
             $scope.getNotes = noteFactory.getNotes().query(
                 function (response) {
                     $scope.notes = response;
