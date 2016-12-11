@@ -29,7 +29,7 @@ class Note(models.Model):
 
     @property
     def get_categories(self):
-        return Categorization.objects.filter(note=self.pk).values_list('label', flat=True)
+        return Categorization.objects.filter(note=self.pk).values_list('category', flat=True)
 
 
 class Label(models.Model):
