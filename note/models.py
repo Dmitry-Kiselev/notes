@@ -25,11 +25,11 @@ class Note(models.Model):
 
     @property
     def get_labels(self):
-        return Labelling.objects.filter(note=self.pk)
+        return Labelling.objects.filter(note=self.pk).values_list('label', flat=True)
 
     @property
     def get_categories(self):
-        return Categorization.objects.filter(note=self.pk)
+        return Categorization.objects.filter(note=self.pk).values_list('label', flat=True)
 
 
 class Label(models.Model):

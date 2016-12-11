@@ -10,7 +10,7 @@ class NoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Note
-        fields = '__all__'
+        fields = ('text', 'owner', 'image', 'attachment', 'color', 'labels', 'categories')
 
 
 class LabelSerializer(serializers.ModelSerializer):
@@ -18,7 +18,7 @@ class LabelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Label
-        fields = ('name', 'owner')
+        fields = '__all__'
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -26,7 +26,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('name', 'owner')
+        fields = '__all__'
 
 
 class LabellingSerializer(serializers.ModelSerializer):
