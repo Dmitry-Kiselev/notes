@@ -7,13 +7,13 @@ angular.module('noteApp')
     .constant("baseURL", "/")
     .service('noteFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
-        this.getNotes = function () {
+        this.notesManager = function () {
             return $resource(baseURL + "notes/:id", null, {'update': {method: 'PUT'}});
         };
-        this.getLabels = function () {
+        this.labelsManager = function () {
             return $resource(baseURL + "labels/:id", null, {'update': {method: 'PUT'}});
         };
-        this.getCategories = function () {
+        this.categoriesManager = function () {
             return $resource(baseURL + "categories/:id", null, {'update': {method: 'PUT'}});
         }
     }]);

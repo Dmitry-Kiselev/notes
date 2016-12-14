@@ -28,7 +28,7 @@ angular.module('noteApp')
         $scope.notes = [];
         $scope.curNote = {};
 
-        $scope.getNotes = function () {
+        $scope.notesManager = function () {
             return noteFactory.query();
         };
         $scope.submitForm = function () {
@@ -54,20 +54,20 @@ angular.module('noteApp')
             // Initialize collapsible (uncomment the line below if you use the dropdown variation)
             $('#noteModal').modal();
             $('select').material_select();
-            $scope.getNotes = noteFactory.getNotes().query(
+            $scope.notesManager = noteFactory.notesManager().query(
                 function (response) {
                     $scope.notes = response;
                     $scope.showNotes = true;
                 }
             );
-            $scope.getLabels = noteFactory.getLabels().query(
+            $scope.labelsManager = noteFactory.labelsManager().query(
                 function (response) {
                     $scope.labels = response;
                     $scope.showLabels = true;
 
                 }
             );
-            $scope.getCategories = noteFactory.getCategories().query(
+            $scope.categoriesManager = noteFactory.categoriesManager().query(
                 function (response) {
                     $scope.categories = response;
                     $scope.showCategories = true;
