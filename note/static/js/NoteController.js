@@ -74,6 +74,15 @@ angular.module('noteApp')
             $scope.activateSelect = function () {
                 $('select').material_select();
             };
+
+            $scope.sendNote = function () {
+                if ($scope.curNote.id) {
+                    noteFactory.notesManager().update({id: $scope.curNote.id}, $scope.curNote);
+                }
+                else {
+                    noteFactory.notesManager().save($scope.curNote);
+                }
+                $scope.curNote = {};
+            }
         });
     });
-
