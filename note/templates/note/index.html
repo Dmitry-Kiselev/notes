@@ -68,11 +68,13 @@
                             <img src="{[{note.image}]}">
                         </div>
                         <div class="card-content">
+                            <div ng-repeat="label in note.labels" class="collection-item">
+                                <span class="new badge">{[{labels[label-1].name}]}</span>
+                                {[{test(labels[label-1].name)}]}
+                            </div>
                             <p>{[{note.text | cut:true:100:' ...'}]}</p>
                         </div>
-                        <div ng-repeat="label in note.labels" class="collection-item">
-                            <span class="new badge">{[{label}]}</span>
-                        </div>
+
                         <div class="card-action">
                             <a href="#">Edit</a>
                             <a href="#">Delete</a>
