@@ -22,6 +22,11 @@ class NoteList(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+        note = Note.objects.get(text=self.request.data['text'])
+        for l in self.request.data['labels']:
+            label = Label.objects.get(pk=l['id'])
+            labelling = Labelling(note=note, label=label)
+            labelling.save()
 
 
 class NoteDetails(RetrieveUpdateDestroyAPIView):
