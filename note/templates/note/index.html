@@ -11,9 +11,9 @@
     {% include 'material/includes/material_css.html' %}
     {% include 'material/includes/material_js.html' %}
 </head>
-<body ng-app="noteApp">
+<body ng-app="noteApp" class="blue-grey lighten-5">
 
-<div ng-controller="NoteController">
+<div ng-controller="NoteController" id="notectl">
     <!-- Dropdown Structure -->
     <ul id="dropdown1" class="dropdown-content">
         <li><a href="{% url 'auth:logout' %}">Logout</a></li>
@@ -74,11 +74,75 @@
                             <span class="new badge">{[{label}]}</span>
                         </div>
                         <div class="card-action">
-                            <a href="#">This is a link</a>
+                            <a href="#">Edit</a>
+                            <a href="#">Delete</a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="fixed-action-btn horizontal">
+            <!-- Modal Trigger -->
+            <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#noteModal">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+        </div>
+        <!-- Modal Structure -->
+        <div id="noteModal" class="modal modal-fixed-footer">
+            <div class="row">
+                <form class="col s12" ng-submit="sendNote()">
+                    <div class="modal-content">
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea placeholder="Take a note..." id="note_text" type="text"
+                                          class="materialize-textarea" ng-model="curNote.text"></textarea>
+                                <label for="note_text">Note text</label>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>File</span>
+                                        <input type="file" ng-model="curNote.attachment">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>Image</span>
+                                        <input type="file" ng-model="curNote.image">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select multiple id="label_select" ng-model="curNote.labels"
+                                            ng-options="l.name for l in labels">
+                                        <option value="" disabled selected id="def_l">Set labels</option>
+                                    </select>
+                                    <label>Labels</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select multiple id="category_select" ng-model="curNote.categories"
+                                            ng-options="c.name for c in categories">
+                                        <option value="" disabled selected>Add categories</option>
+                                    </select>
+                                    {[{activateSelect()}]}
+                                    <label>Categories</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">Save
+                        </button>
+                        <button class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+
         </div>
     </div>
 </div>
@@ -89,5 +153,6 @@
 <script src="{% static 'js/noteApp.js' %}"></script>
 <script src="{% static 'js/NoteController.js' %}"></script>
 <script src="{% static 'js/services.js' %}"></script>
+<script src="{% static 'js/filters.js' %}"></script>
 </body>
 </html>
