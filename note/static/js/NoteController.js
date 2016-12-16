@@ -55,6 +55,11 @@ angular.module('noteApp')
                     $scope.curNote = {}
                 }
                 $scope.curNote = {};
+            };
+
+            $scope.deleteNote = function (id) {
+                noteFactory.notesManager().delete({id: id});
+                $scope.notes.pop(id - 1);  // in DB id starts from 1, but in arrays indexes starts from 0
             }
         });
     });
