@@ -59,7 +59,8 @@ angular.module('noteApp')
 
             $scope.deleteNote = function (id) {
                 noteFactory.notesManager().delete({id: id});
-                $scope.notes.pop(id - 1);  // in DB id starts from 1, but in arrays indexes starts from 0
-            }
+                var index = $scope.notes.findIndex(x = > x.id == id);
+                $scope.notes.pop(index);
+            };
         });
     });
