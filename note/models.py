@@ -18,7 +18,7 @@ class Note(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(blank=True, null=True, upload_to='images/')
     attachment = models.FileField(blank=True, null=True, upload_to='files/')
-    color = models.CharField(choices=colors, max_length=20, default='grey')
+    color = models.CharField(choices=colors, max_length=20, default='blue-grey darken-1')
 
     def __str__(self):
         return self.text[:10]
