@@ -7,6 +7,8 @@ angular.module('noteApp')
 
     .controller('NoteController', function ($scope, $resource, noteFactory) {
 
+        var DEFAULT_COLOR = "blue-grey darken-1";
+
         // create a blank object to handle form data.
         $scope.userdata = {};
         $scope.notes = [];
@@ -43,9 +45,14 @@ angular.module('noteApp')
             $scope.sendNote = function () {
                 if ($scope.curNote.id) {
                     noteFactory.notesManager().update({id: $scope.curNote.id}, $scope.curNote);
+                    $scope.notes[$scope.curNote.id] = $scope.curNote;
+                    $scope.curNote = {}
                 }
                 else {
                     noteFactory.notesManager().save($scope.curNote);
+                    $scope.curNote.color = DEFAULT_COLOR;
+                    $scope.notes.push($scope.curNote);
+                    $scope.curNote = {}
                 }
                 $scope.curNote = {};
             }
