@@ -9,3 +9,7 @@ app.config(function ($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
     $interpolateProvider.endSymbol('}]}');
 });
+
+app.config(function ($resourceProvider) {
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+});
