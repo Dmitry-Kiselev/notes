@@ -69,7 +69,7 @@
                         </div>
                         <div class="card-content">
                             <div ng-repeat="label in note.labels" class="collection-item">
-                                <span class="new badge">{[{labels[label-1].name}]}</span>
+                                <span class="new badge" data-badge-caption="">{[{labels[label-1].name}]}</span>
                                 {[{test(labels[label-1].name)}]}
                             </div>
                             <p>{[{note.text | cut:true:100:' ...'}]}</p>
