@@ -1,1 +1,7 @@
-.modal { overflow: hidden; }
+.modal {
+    overflow: hidden;
+}
+
+.badge-pad {
+    padding: 10px;
+}
