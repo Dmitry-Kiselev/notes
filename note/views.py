@@ -23,7 +23,7 @@ class NoteList(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
         note = Note.objects.get(text=self.request.data['text'])
-        for l in self.request.data['labels']:
+        for l in self.request.data.get('labels'):
             label = Label.objects.get(pk=l)
             labelling = Labelling(note=note, label=label)
             labelling.save()
