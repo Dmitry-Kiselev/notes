@@ -26,7 +26,7 @@
         <ul ng-repeat="label in labels">
             <li><a href="#!"><i class="material-icons">label</i>{[{label.name}]}</a></li>
         </ul>
-        <li><a href="#">Add new label</a></li>
+        <li><a href="#labelModal">Add new label</a></li>
         <li>
             <div class="divider">Categories</div>
         </li>
@@ -96,7 +96,7 @@
         <!-- Modal Structure -->
         <div id="noteModal" class="modal modal-fixed-footer">
             <div class="row">
-                <form class="col s12" ng-submit="sendNote()">
+                <form class="col s12" ng-submit="sendNote()" name="noteForm">
                     <div class="modal-content">
 
                         <div class="row">
@@ -117,8 +117,15 @@
                                 <div class="file-field input-field">
                                     <div class="btn">
                                         <span>Image</span>
-                                        <input type="file" ng-model="curNote.image">
+                                        <input type="file" ng-model="curNote.image" ngf-select name="file"
+                                               accept="image/*" ngf-max-size="5MB" ngf-model-invalid="errorImage"
+                                               multiple>
                                     </div>
+                                    <i ng-show="curNote.image.$error.maxSize">File too large
+                                        {[{errorFile.size / 1000000|number:1}]}MB: max 5M</i>
+                                    <img ng-show="curNote.image.$valid" ngf-thumbnail="curNote.image" class="thumb">
+                                    <button ng-click="curNote.image = null" ng-show="curNote.image">Remove</button>
+                                    <br>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text">
                                     </div>
@@ -143,7 +150,9 @@
                                 <div class="input-field col s12">
                                     <select id="color_select" ng-model="curNote.color">
                                         <option value="" disabled selected>Color</option>
-                                        <option ng-repeat="color in colors" value="{[{color.class}]}">{[{color.color}]}</option>
+                                        <option ng-repeat="color in colors" value="{[{color.class}]}">
+                                            {[{color.color}]}
+                                        </option>
                                     </select>
                                     {[{activateSelect()}]}
                                     <label>Categories</label>
@@ -160,12 +169,43 @@
                 </form>
             </div>
         </div>
+
+        <!-- Label Modal Structure -->
+        <div id="labelModal" class="modal">
+            <form class="col s12" ng-submit="sendLabel()">
+            <div class="modal-content">
+                <h4>Create/Edit label</h4>
+                <div class="row">
+                    <div class="col s12" ng-if="!curLabel.id">
+                        Create new label:
+                        <div class="input-field inline">
+                            <input id="label" type="text" class="" ng-model="curLabel.name">
+                            <label for="label">Label</label>
+                        </div>
+                    </div>
+                    <div class="col s12" ng-if="curLabel.id">
+                        Create new label:
+                        <div class="input-field inline">
+                            <input id="label" type="text" class="" ng-model="curLabel.name">
+                            <label for="label">Label</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat" type="submit">Save</button>
+                <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</button>
+            </div>
+            </form>
+        </div>
     </div>
 </div>
 
 
 <script src="{% static 'bower_components/angular/angular.min.js' %}"></script>
 <script src="{% static 'bower_components/angular-resource/angular-resource.min.js' %}"></script>
+<script src="{% static 'bower_components/ng-file-upload/ng-file-upload.min.js' %}"></script>
+<script src="{% static 'bower_components/ng-file-upload/ng-file-upload-shim.min.js' %}"></script>
 <script src="{% static 'js/noteApp.js' %}"></script>
 <script src="{% static 'js/NoteController.js' %}"></script>
 <script src="{% static 'js/services.js' %}"></script>
