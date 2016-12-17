@@ -9,6 +9,17 @@ angular.module('noteApp')
 
     var DEFAULT_COLOR = "blue-grey darken-1";
 
+    $scope.colors = [
+        {'color': 'red', 'class': 'red darken-1'},
+        {'color': 'purple', 'class': 'purple darken-1'},
+        {'color': 'amber', 'class': 'amber accent-1'},
+        {'color': 'cyan', 'class': 'cyan darken-1'},
+        {'color': 'grey', 'class': 'blue-grey darken-1'},
+        {'color': 'indigo', 'class': 'indigo darken-1'},
+        {'color': 'light green', 'class': 'light-green darken-1'},
+        {'color': 'pink', 'class': 'pink darken-1'}
+    ];
+
     // create a blank object to handle form data.
     $scope.userdata = {};
     $scope.notes = [];
@@ -52,7 +63,9 @@ angular.module('noteApp')
                 $scope.curNote = {};
             } else {
                 noteFactory.notesManager().save($scope.curNote);
-                $scope.curNote.color = DEFAULT_COLOR;
+                if (!$scope.curNote.color && !$scope.curNote.id){
+                    $scope.curNote.color = DEFAULT_COLOR;
+                }
                 $scope.notes.push($scope.curNote);
                 $scope.curNote = {}
             }
