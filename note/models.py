@@ -15,21 +15,16 @@ colors = (
 
 class Note(models.Model):
     text = models.TextField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(blank=True, null=True, upload_to='images/')
-    attachment = models.FileField(blank=True, null=True, upload_to='files/')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     color = models.CharField(choices=colors, max_length=20, default='blue-grey darken-1')
+    labels = models.ManyToManyField('Label', blank=True, null=True)
+    categories = models.ManyToManyField('Category', blank=True, null=True)
+    images = models.ManyToManyField('Image', blank=True, null=True)
+    files = models.ManyToManyField('File', blank=True, null=True)
+    shared_with = models.ManyToManyField(User, related_name='collaborators', blank=True, null=True)
 
     def __str__(self):
         return self.text[:10]
-
-    @property
-    def get_labels(self):
-        return Labelling.objects.filter(note=self.pk).values_list('label', flat=True)
-
-    @property
-    def get_categories(self):
-        return Categorization.objects.filter(note=self.pk).values_list('category', flat=True)
 
 
 class Label(models.Model):
@@ -50,35 +45,10 @@ class Category(models.Model):
 
 
 class Image(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(upload_to='images/')
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class File(models.Model):
-    file = models.FileField()
+    file = models.FileField(upload_to='files/')
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
-class Delegation(models.Model):
-    note = models.ForeignKey(Note, on_delete=models.CASCADE)
-    delegate_to = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
-class Categorization(models.Model):
-    note = models.ForeignKey(Note, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-
-class Labelling(models.Model):
-    note = models.ForeignKey(Note, on_delete=models.CASCADE)
-    label = models.ForeignKey(Label, on_delete=models.CASCADE)
-
-
-class Gallery(models.Model):
-    note = models.ForeignKey(Note, on_delete=models.CASCADE)
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
-
-
-class FileStorage(models.Model):
-    note = models.ForeignKey(Note, on_delete=models.CASCADE)
-    file = models.ForeignKey(Image, on_delete=models.CASCADE)
