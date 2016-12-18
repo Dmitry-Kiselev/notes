@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Note, Label, Category, Labelling, Categorization, Image, File
+from .models import Note, Label, Category, Image, File
 
 
 class Base64ImageField(serializers.ImageField):
@@ -53,16 +53,6 @@ class Base64ImageField(serializers.ImageField):
         return extension
 
 
-class NoteSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.id')
-    labels = serializers.ReadOnlyField(source='get_labels')
-    categories = serializers.ReadOnlyField(source='get_categories')
-
-    class Meta:
-        model = Note
-        fields = ('id', 'text', 'owner', 'image', 'attachment', 'color', 'labels', 'categories')
-
-
 class LabelSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
 
@@ -79,28 +69,21 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class LabellingSerializer(serializers.ModelSerializer):
-    note = serializers.ReadOnlyField(source='note.id')
-    label = serializers.ReadOnlyField(source='label.id')
-
-    class Meta:
-        model = Labelling
-        fields = '__all__'
-
-
-class CategorizationSerializer(serializers.ModelSerializer):
-    note = serializers.ReadOnlyField(source='note.id')
-    category = serializers.ReadOnlyField(source='category.id')
-
-    class Meta:
-        model = Categorization
-        fields = '__all__'
-
-
 class ImageSerializer(serializers.ModelSerializer):
     note = serializers.ReadOnlyField(source='note.id')
     image = Base64ImageField(max_length=None, use_url=True, )
 
     class Meta:
         model = Image
+        fields = '__all__'
+
+
+class NoteSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.id')
+    labels = LabelSerializer(many=True, read_only=True)
+    categories = CategorySerializer(many=True, read_only=True)
+    images = ImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Note
         fields = '__all__'
