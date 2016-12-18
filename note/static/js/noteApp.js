@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var app = angular.module("noteApp", ['ngResource']);
+var app = angular.module("noteApp", ['ngResource', 'ngFileUpload']);
 
 app.config(function ($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
