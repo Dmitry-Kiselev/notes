@@ -17,11 +17,11 @@ class Note(models.Model):
     text = models.TextField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     color = models.CharField(choices=colors, max_length=20, default='blue-grey darken-1')
-    labels = models.ManyToManyField('Label', blank=True, null=True)
-    categories = models.ManyToManyField('Category', blank=True, null=True)
-    images = models.ManyToManyField('Image', blank=True, null=True)
-    files = models.ManyToManyField('File', blank=True, null=True)
-    shared_with = models.ManyToManyField(User, related_name='collaborators', blank=True, null=True)
+    labels = models.ManyToManyField('Label', blank=True)
+    categories = models.ManyToManyField('Category', blank=True)
+    images = models.ManyToManyField('Image', blank=True)
+    files = models.ManyToManyField('File', blank=True)
+    shared_with = models.ManyToManyField(User, related_name='collaborators', blank=True)
 
     def __str__(self):
         return self.text[:10]
