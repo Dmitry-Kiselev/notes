@@ -1,11 +1,10 @@
 from rest_framework import permissions
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 
-from .models import Note, Label, Category, Labelling, Categorization
+from .models import Note, Label, Category, Image, File
 from .permissions import IsOwnerOrDenial
-from .serializers import NoteSerializer, LabelSerializer, LabellingSerializer, CategorySerializer, \
-    CategorizationSerializer
+from .serializers import NoteSerializer, LabelSerializer, CategorySerializer, \
+    ImageSerializer
 from django.shortcuts import render
 
 
@@ -22,11 +21,6 @@ class NoteList(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-        note = Note.objects.get(text=self.request.data['text'])
-        for l in self.request.data.get('labels'):
-            label = Label.objects.get(pk=l)
-            labelling = Labelling(note=note, label=label)
-            labelling.save()
 
 
 class NoteDetails(RetrieveUpdateDestroyAPIView):
@@ -38,16 +32,6 @@ class NoteDetails(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Note.objects.filter(owner=self.request.user.pk)
-
-    def perform_update(self, serializer):
-        note = Note.objects.get(pk=self.kwargs['pk'])
-        old = Labelling.objects.filter(note=note)  # we sending entire note array every time
-        # and if user deletes note we need be sure that it's will be deleted from database
-        old.delete()
-        for l in self.request.data['labels']:
-            label = Label.objects.get(pk=l)
-            labelling = Labelling(note=note, label=label)
-            labelling.save()
 
 
 class LabelList(ListCreateAPIView):
@@ -104,11 +88,3 @@ class CategoryDetails(RetrieveUpdateDestroyAPIView):
 
 def index(request):
     return render(request, 'note/index.html')
-
-
-"""
-class LabelsRelations(CreateModelMixin, DestroyModelMixin):
-    serializer_class = Labelling
-    def get_queryset(self):
-        return Labelling.objects.filter(note=)
-    """
