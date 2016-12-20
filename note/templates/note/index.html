@@ -66,17 +66,16 @@
         <div class="row">
             <div ng-repeat="note in notes | filter:searchText track by note.id">
                 <div class="col s12 m4">
-                    <div class="card {[{note.color}]}">
-                        <div class="card-image" ng-if="note.image">
-                            <img src="{[{note.image}]}">
+                    <div class="card medium {[{note.color}]}">
+                        <div class="card-image" ng-if="note.images">
+                            <img ng-repeat="img in note.images | limitTo: 2" src="{[{img.image}]}">
                         </div>
                         <div class="card-content">
                             <div ng-repeat="label in note.labels" class="collection-item">
-                                <span class="new badge" data-badge-caption="">{[{labels[label-1].name}]}</span>
-                                {[{test(labels[label-1].name)}]}
+                                <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
                             </div>
                             <!-- Display budges at the top of notes-->
-                            <p class="badge-pad"></p>
+                            <i class="badge-pad"></i>
                             <p>{[{note.text | cut:true:100:' ...'}]}</p>
                         </div>
                         <div class="card-action">
@@ -103,7 +102,7 @@
                             <div class="input-field col s12">
                                 <textarea placeholder="Take a note..." id="note_text" type="text"
                                           class="materialize-textarea" ng-model="curNote.text"
-                                          md-autofocus=""></textarea>
+                                          ></textarea>
                                 <label for="note_text">Note text</label>
                                 <div class="file-field input-field">
                                     <div class="btn">
@@ -134,7 +133,7 @@
                                     <select multiple id="label_select" ng-model="curNote.labels"
                                     >
                                         <option value="" disabled selected id="def_l">Set labels</option>
-                                        <option ng-repeat="label in labels" ng-value="label.id">{[{label.name}]}
+                                        <option ng-repeat="label in labels" ng-value="label">{[{label.name}]}
                                         </option>
                                     </select>
                                     <label>Labels</label>
