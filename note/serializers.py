@@ -80,10 +80,25 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class NoteSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
-    labels = LabelSerializer(many=True, read_only=True)
+    labels = LabelSerializer(many=True)
     categories = CategorySerializer(many=True, read_only=True)
     images = ImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Note
         fields = '__all__'
+
+    def create(self, validated_data):
+        labels = validated_data.pop('labels')
+        note = Note.objects.create(**validated_data)
+        for label in labels:
+            note.labels.add(Label.objects.get(name=label["name"]))
+        return note
+
+    def update(self, instance, validated_data):
+        if instance:
+            labels = validated_data.pop('labels')
+            instance.labels.clear()
+            for label in labels:
+                instance.labels.add(Label.objects.get(name=label["name"]))
+            return instance
