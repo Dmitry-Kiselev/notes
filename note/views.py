@@ -4,7 +4,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from .models import Note, Label, Category, Image, File
 from .permissions import IsOwnerOrDenial
 from .serializers import NoteSerializer, LabelSerializer, CategorySerializer, \
-    ImageSerializer
+    ImageSerializer, FileSerializer
 from django.shortcuts import render
 
 
@@ -90,7 +90,7 @@ def index(request):
     return render(request, 'note/index.html')
 
 
-class ImageList(ListCreateAPIView) :
+class ImageList(ListCreateAPIView):
     """
     List all images, or create a new one.
     """
@@ -103,3 +103,16 @@ class ImageList(ListCreateAPIView) :
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+
+class FileList(ListCreateAPIView):
+    """
+    List all files, or create a new one.
+    """
+    serializer_class = FileSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
+
+    def get_queryset(self):
+        return File.objects.filter(owner=self.request.user.pk)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
