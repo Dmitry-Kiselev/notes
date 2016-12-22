@@ -99,21 +99,22 @@
                     <div class="modal-content">
 
                         <div class="row">
-                            <div class="input-field col s12">
+                            <div class="input-field">
                                 <textarea placeholder="Take a note..." id="note_text" type="text"
                                           class="materialize-textarea" ng-model="curNote.text"
                                 ></textarea>
                                 <label for="note_text">Note text</label>
-                                <div class="file-field input-field">
+                                <div class="file-field input-field col s12">
                                     <div class="btn">
                                         <span>File</span>
-                                        <input type="file" ng-model="curNote.attachment">
+                                        <input type="file" ngf-max-size="50MB"
+                                               ngf-select="uploadFiles(curNote.files)" name="file" ng-model="curNote.files" multiple>
                                     </div>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text">
                                     </div>
                                 </div>
-                                <div class="file-field input-field">
+                                <div class="file-field input-field col s12">
                                     <div class="btn">
                                         <span>Image</span>
                                         <input type="file" name="image" ng-model="curNote.images"
@@ -121,9 +122,6 @@
                                                ngf-select="uploadImages(curNote.images)"
                                                multiple>
                                     </div>
-                                    <i ng-show="curNote.images.$error.maxSize">File too large
-                                        {[{errorFile.size / 1000000|number:1}]}MB: max 50M</i>
-
                                     <br>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text">
