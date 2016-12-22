@@ -115,15 +115,6 @@ angular.module('noteApp')
             $('#noteModal').modal('open');
         };
 
-        $scope.checkSelected = function() {
-            try {
-                $('#label_select').val($scope.curNote.labels).trigger('update');
-                $('#label_select').material_select();
-            } catch (err) {
-                // do nothing
-            }
-        };
-
         $scope.sendLabel = function() {
             if ($scope.curLabel.id) {
                 noteFactory.labelsManager().update({
@@ -131,13 +122,33 @@ angular.module('noteApp')
                 }, $scope.curLabel);
                 var index = $scope.labels.findIndex(x => x.id == $scope.curLabel.id);
                 $scope.labels[index] = $scope.curLabel;
-                $scope.curLabel = {};
             } else {
                 noteFactory.labelsManager().save($scope.curLabel);
                 $scope.labels.push($scope.curLabel);
-                $scope.curLabel = {}
             }
             $scope.curLabel = {};
+        };
+
+        // for multiple images:
+        $scope.uploadImages = function(files) {
+            var clear = true;
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    Upload.upload({
+                        data: {
+                            image: files[i]
+                        },
+                        url: '/images/',
+                        method: 'POST'
+                    }).then(function(response) {
+                        if (clear) {
+                            $scope.curNote.images = [];
+                            clear = false;
+                        }
+                        $scope.curNote.images.push(response.data);
+                    });
+                }
+            }
         };
 
     });
