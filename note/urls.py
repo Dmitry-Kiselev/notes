@@ -27,6 +27,7 @@ urlpatterns = [
                   url(r'^categories/', views.CategoryList.as_view(), name='categories_list'),
                   url(r'^categories/(?P<pk>[0-9]+)$', views.CategoryDetails.as_view(), name='category_detail'),
                   url(r'^images/', views.ImageList.as_view(), name='image_list'),
+                  url(r'^files/', views.FileList.as_view(), name='files_list'),
                   url(r'^$', views.index),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
