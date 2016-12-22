@@ -102,7 +102,7 @@
                             <div class="input-field col s12">
                                 <textarea placeholder="Take a note..." id="note_text" type="text"
                                           class="materialize-textarea" ng-model="curNote.text"
-                                          ></textarea>
+                                ></textarea>
                                 <label for="note_text">Note text</label>
                                 <div class="file-field input-field">
                                     <div class="btn">
@@ -116,14 +116,14 @@
                                 <div class="file-field input-field">
                                     <div class="btn">
                                         <span>Image</span>
-                                        <input type="file" ng-model="curNote.image" ngf-select name="file"
-                                               accept="image/*" ngf-max-size="5MB" ngf-model-invalid="errorImage"
+                                        <input type="file" name="image" ng-model="curNote.images"
+                                               accept="image/*" ngf-max-size="50MB"
+                                               ngf-select="uploadImages(curNote.images)"
                                                multiple>
                                     </div>
-                                    <i ng-show="curNote.image.$error.maxSize">File too large
-                                        {[{errorFile.size / 1000000|number:1}]}MB: max 5M</i>
-                                    <img ng-show="curNote.image.$valid" ngf-thumbnail="curNote.image" class="thumb">
-                                    <button ng-click="curNote.image = null" ng-show="curNote.image">Remove</button>
+                                    <i ng-show="curNote.images.$error.maxSize">File too large
+                                        {[{errorFile.size / 1000000|number:1}]}MB: max 50M</i>
+
                                     <br>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text">
@@ -154,8 +154,10 @@
                                         </option>
                                     </select>
                                     {[{activateSelect()}]}
-                                    <label>Categories</label>
+                                    <label>Note color</label>
                                 </div>
+                                <img ngf-thumbnail="image.image" class="thumb"
+                                     ng-repeat="image in curNote.images">
                             </div>
                         </div>
                     </div>
@@ -172,29 +174,32 @@
         <!-- Label Modal Structure -->
         <div id="labelModal" class="modal">
             <form class="col s12" ng-submit="sendLabel()">
-            <div class="modal-content">
-                <h4>Create/Edit label</h4>
-                <div class="row">
-                    <div class="col s12" ng-if="!curLabel.id">
-                        Create new label:
-                        <div class="input-field inline">
-                            <input id="label" type="text" class="" ng-model="curLabel.name">
-                            <label for="label">Label</label>
+                <div class="modal-content">
+                    <h4>Create/Edit label</h4>
+                    <div class="row">
+                        <div class="col s12" ng-if="!curLabel.id">
+                            Create new label:
+                            <div class="input-field inline">
+                                <input id="label" type="text" class="" ng-model="curLabel.name">
+                                <label for="label">Label</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col s12" ng-if="curLabel.id">
-                        Create new label:
-                        <div class="input-field inline">
-                            <input id="label" type="text" class="" ng-model="curLabel.name">
-                            <label for="label">Label</label>
+                        <div class="col s12" ng-if="curLabel.id">
+                            Create new label:
+                            <div class="input-field inline">
+                                <input id="label" type="text" class="" ng-model="curLabel.name">
+                                <label for="label">Label</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat" type="submit">Save</button>
-                <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</button>
-            </div>
+                <div class="modal-footer">
+                    <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat" type="submit">
+                        Save
+                    </button>
+                    <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel
+                    </button>
+                </div>
             </form>
         </div>
     </div>
