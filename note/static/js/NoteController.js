@@ -173,5 +173,8 @@ angular.module('noteApp')
             }
         };
 
+        $scope.setFilter = function (name) {
+            $scope.searchText = name;
+        }
     });
 });
