@@ -62,7 +62,7 @@ class NoteSerializer(serializers.ModelSerializer):
         if files:
             for f in files:
                 file = File.objects.get(pk=f['id'])
-                note.images.add(file)
+                note.files.add(file)
         return note
 
     def update(self, instance, validated_data):
