@@ -151,5 +151,27 @@ angular.module('noteApp')
             }
         };
 
+        // for multiple files upload:
+        $scope.uploadFiles = function(files) {
+            var clear = true;
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    Upload.upload({
+                        data: {
+                            file: files[i]
+                        },
+                        url: '/files/',
+                        method: 'POST'
+                    }).then(function(response) {
+                        if (clear) {
+                            $scope.curNote.files = [];
+                            clear = false;
+                        }
+                        $scope.curNote.files.push(response.data);
+                    });
+                }
+            }
+        };
+
     });
 });
