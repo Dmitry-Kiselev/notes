@@ -46,9 +46,9 @@ angular.module('noteApp')
         // Initialize collapse button
         $("#sidenav-btn").sideNav();
         // Initialize collapsible (uncomment the line below if you use the dropdown variation)
-        $('#noteModal').modal();
-        $('#labelModal').modal();
+        $('.modal').modal();
         $('select').material_select();
+
         $scope.notes = noteFactory.notesManager().query(
             function() {
                 $scope.showNotes = true;
@@ -67,8 +67,15 @@ angular.module('noteApp')
         );
 
         $scope.users = noteFactory.userManager().query(
-            function () {
+            function() {
                 $scope.showUsers = true;
+                $scope.userObj = {};
+                for (var i in $scope.users) {
+                    $scope.userObj[$scope.users[i]] = null;
+                }
+                $('input.autocomplete').autocomplete({
+                    data: $scope.userObj
+                });
             }
         );
 
@@ -179,18 +186,29 @@ angular.module('noteApp')
             }
         };
 
-        $scope.setFilter = function (name) {
+        $scope.setFilter = function(name) {
             $scope.searchText = name;
         };
 
-        $scope.noteDetail = function (id) {
+        $scope.noteDetail = function(id) {
             var index = $scope.notes.findIndex(x => x.id == id);
-          $scope.curNote = $scope.notes[index];
-          $('#detailModal').modal();
+            $scope.curNote = $scope.notes[index];
+            $('#detailModal').modal();
         };
 
-        $scope.clearCurNote = function () {
+        $scope.clearCurNote = function() {
             $scope.curNote = {};
+        };
+        
+        $scope.shareNote = function (id) {
+            $scope.shareObj = {'note': id};
+            $('#shareModal').modal('open');
+        };
+
+        $scope.sendSharedWith = function () {
+            if ($scope.shareObj.user && $scope.shareObj.note){
+                noteFactory.userManager().update($scope.shareObj);
+            }
         }
     });
 });

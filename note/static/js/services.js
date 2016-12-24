@@ -17,6 +17,6 @@ angular.module('noteApp')
             return $resource(baseURL + "categories/:id", null, {'update': {method: 'PUT'}});
         };
         this.userManager = function () {
-            return $resource(baseURL + "users/", null);
-        }
+            return $resource(baseURL + "users/:id", null, {'update': {method: 'PUT'}});
+        };
     }]);

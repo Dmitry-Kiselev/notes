@@ -83,6 +83,7 @@
                                     <p>{[{note.text | cut:true:100:' ...'}]}</p>
                                 </div>
                                 <div class="card-action">
+                                    <a href="#" ng-click="shareNote(note.id)">Share</a>
                                     <a href="#" ng-click="editNote(note.id)">Edit</a>
                                     <a href="#" ng-click="deleteNote(note.id)">Delete</a>
                                 </div>
@@ -94,8 +95,7 @@
             </div>
             <div class="fixed-action-btn horizontal">
                 <!-- Modal Trigger -->
-                <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#noteModal"
-                   ng-click="clearCurNote()">
+                <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#noteModal" ng-click="clearCurNote()">
                     <i class="large material-icons">mode_edit</i>
                 </a>
             </div>
@@ -235,6 +235,36 @@
                     <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
                 </div>
             </div>
+
+            <!-- Share Modal -->
+            <div id="shareModal" class="modal">
+                <form class="col s12" ng-submit="">
+                    <div class="modal-content">
+                        <h4>Share with...</h4>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">supervisor_account</i>
+                                        <input type="text" id="autocomplete-input" class="autocomplete" ng-model="shareObj.user">
+                                        <label for="autocomplete-input">User name</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"
+                                type="submit" ng-click="sendSharedWith()">
+                            Save
+                        </button>
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
         </div>
     </div>
 
