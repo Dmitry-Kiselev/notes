@@ -1,13 +1,6 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Note, Label, Category, Image, File
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username',)
 
 
 class LabelSerializer(serializers.ModelSerializer):
@@ -46,22 +39,26 @@ class FileSerializer(serializers.ModelSerializer):
 
 class NoteSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
-    labels = LabelSerializer(many=True)
+    labels = LabelSerializer(many=True, required=False)
     categories = CategorySerializer(many=True, read_only=True)
     images = ImageSerializer(many=True, read_only=True)
     files = FileSerializer(many=True, read_only=True)
 
     class Meta:
         model = Note
-        fields = '__all__'
+        fields = ('id', 'owner', 'text',  'labels', 'categories', 'images', 'files', 'color')
 
     def create(self, validated_data):
-        labels = validated_data.pop('labels')
+        if 'labels' in validated_data:
+            labels = validated_data.pop('labels')
+        else:
+            labels = None
         images = self.initial_data.get('images')
         files = self.initial_data.get('files')
         note = Note.objects.create(**validated_data)
-        for label in labels:
-            note.labels.add(Label.objects.get(name=label["name"]))
+        if labels:
+            for label in labels:
+                note.labels.add(Label.objects.get(name=label["name"]))
         if images:
             for img in images:
                 image = Image.objects.get(pk=img['id'])
@@ -77,6 +74,9 @@ class NoteSerializer(serializers.ModelSerializer):
             labels = validated_data.pop('labels')
             images = self.initial_data.get('images')
             files = self.initial_data.get('files')
+            categories = validated_data.get('categories')
+            instance.color = validated_data.pop('color')
+            instance.text = validated_data.pop('text')
             instance.labels.clear()
             instance.images.clear()
             instance.files.clear()
@@ -90,4 +90,9 @@ class NoteSerializer(serializers.ModelSerializer):
                 for f in files:
                     file = File.objects.get(pk=f['id'])
                     instance.files.add(file)
+            if categories:
+                for c in categories:
+                    category = Category.objects.get(pk=c['id'])
+                    instance.categories.add(category)
+            instance.save()
             return instance
