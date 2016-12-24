@@ -66,6 +66,12 @@ angular.module('noteApp')
             }
         );
 
+        $scope.users = noteFactory.userManager().query(
+            function () {
+                $scope.showUsers = true;
+            }
+        );
+
         $scope.activateSelect = function() {
             $('select').material_select();
         };
@@ -175,6 +181,16 @@ angular.module('noteApp')
 
         $scope.setFilter = function (name) {
             $scope.searchText = name;
+        };
+
+        $scope.noteDetail = function (id) {
+            var index = $scope.notes.findIndex(x => x.id == id);
+          $scope.curNote = $scope.notes[index];
+          $('#detailModal').modal();
+        };
+
+        $scope.clearCurNote = function () {
+            $scope.curNote = {};
         }
     });
 });
