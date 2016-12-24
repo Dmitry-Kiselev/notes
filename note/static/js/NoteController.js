@@ -211,6 +211,23 @@ angular.module('noteApp')
             if ($scope.shareObj.user && $scope.shareObj.note) {
                 noteFactory.userManager().update($scope.shareObj);
             }
+        };
+
+        $scope.filterFn = function(item) {
+            // must have array, and array must be empty
+            return item.shared_with && item.shared_with.length != 0;
+        };
+
+        $scope.deleteShare = function(note_id, user_id) {
+            var index = $scope.notes[note_id].shared_with.indexOf(user_id);
+            if (index >= 0) {
+                arr.splice(index, 1);
+            }
+            var shareRelation = {
+                'note': note_id,
+                'user': user_id
+            };
+            noteFactory.userManager().delete(shareRelation);
         }
     });
 });

@@ -139,3 +139,9 @@ class ListUsers(APIView):
         user = self.request.data.get('user')
         note.shared_with.add(User.objects.get(username=user))
         return Response(status=status.HTTP_201_CREATED)
+
+    def delete(self, request, format=None):
+        note = Note.objects.get(pk=self.request.query_params['note'])
+        user = self.request.query_params['user']
+        note.shared_with.remove(user)
+        return Response(status=status.HTTP_204_NO_CONTENT)

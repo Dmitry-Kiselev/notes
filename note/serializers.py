@@ -43,10 +43,11 @@ class NoteSerializer(serializers.ModelSerializer):
     categories = CategorySerializer(many=True, read_only=True)
     images = ImageSerializer(many=True, read_only=True)
     files = FileSerializer(many=True, read_only=True)
+    #shared_with = serializers.ReadOnlyField()
 
     class Meta:
         model = Note
-        fields = ('id', 'owner', 'text', 'labels', 'categories', 'images', 'files', 'color')
+        fields = ('id', 'owner', 'text', 'labels', 'categories', 'images', 'files', 'color', 'shared_with',)
 
     def create(self, validated_data):
 
