@@ -1,13 +1,15 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from rest_framework import permissions
-from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Note, Label, Category, Image, File
 from .permissions import IsOwnerOrDenial
 from .serializers import NoteSerializer, LabelSerializer, CategorySerializer, \
-    ImageSerializer, FileSerializer, UserSerializer
+    ImageSerializer, FileSerializer
 
 
 class NoteList(ListCreateAPIView):
@@ -120,9 +122,20 @@ class FileList(ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class ListUsers(APIView):
     """
-    A viewset for viewing and editing user instances.
+    View to list all users in the system.
     """
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
+
+    def get(self, request, format=None):
+        """
+        Return a list of all users.
+        """
+        usernames = [user.username for user in User.objects.all()]
+        return Response(usernames)
+
+    def put(self, request, format=None):
+        note = Note.objects.get(pk=self.request.data.get('note'))
+        user = self.request.data.get('user')
+        note.shared_with.add(User.objects.get(username=user))
+        return Response(status=status.HTTP_201_CREATED)
