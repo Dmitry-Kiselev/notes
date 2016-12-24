@@ -284,10 +284,7 @@
                                     <ul class="collection with-header"
                                         ng-repeat="note in notes | filter : filterFn">
                                         <li class="collection-item avatar" ng-repeat="user in note.shared_with">
-                                            <img src="{note.images.image}]}" alt="" class="circle"
-                                                 ng-if="note.images.image">
-                                            <img src="{% static 'images/note.png' %}" alt="" class="circle"
-                                                 ng-if="!note.images.image">
+                                            <img src="{% static 'images/note.png' %}" alt="" class="circle">
                                             <span class="title truncate">{[{note.text}]}</span>
                                             <p>Shared with <br>
                                                 {[{users[user-1]}]}
