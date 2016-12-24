@@ -87,17 +87,17 @@ angular.module('noteApp')
             if ($scope.curNote.id) {
                 noteFactory.notesManager().update({
                     id: $scope.curNote.id
-                }, $scope.curNote);
+                }, $scope.curNote, function(response) {
+                    var index = $scope.notes.findIndex(x => x.id == $scope.curNote.id);
+                    $scope.notes[index] = response;
+                });
                 var index = $scope.notes.findIndex(x => x.id == $scope.curNote.id);
                 $scope.notes[index] = $scope.curNote;
-                $scope.curNote = {};
             } else {
-                noteFactory.notesManager().save($scope.curNote);
-                if (!$scope.curNote.color && !$scope.curNote.id) {
-                    $scope.curNote.color = DEFAULT_COLOR;
-                }
-                $scope.notes.push($scope.curNote);
-                $scope.curNote = {}
+                noteFactory.notesManager().save($scope.curNote, function(response) {
+                    $scope.notes.push(response);
+                    $scope.curNote = response;
+                });
             }
             $scope.curNote = {};
         };
@@ -199,14 +199,16 @@ angular.module('noteApp')
         $scope.clearCurNote = function() {
             $scope.curNote = {};
         };
-        
-        $scope.shareNote = function (id) {
-            $scope.shareObj = {'note': id};
+
+        $scope.shareNote = function(id) {
+            $scope.shareObj = {
+                'note': id
+            };
             $('#shareModal').modal('open');
         };
 
-        $scope.sendSharedWith = function () {
-            if ($scope.shareObj.user && $scope.shareObj.note){
+        $scope.sendSharedWith = function() {
+            if ($scope.shareObj.user && $scope.shareObj.note) {
                 noteFactory.userManager().update($scope.shareObj);
             }
         }
