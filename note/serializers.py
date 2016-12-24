@@ -46,15 +46,15 @@ class NoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Note
-        fields = ('id', 'owner', 'text',  'labels', 'categories', 'images', 'files', 'color')
+        fields = ('id', 'owner', 'text', 'labels', 'categories', 'images', 'files', 'color')
 
     def create(self, validated_data):
-        if 'labels' in validated_data:
-            labels = validated_data.pop('labels')
-        else:
-            labels = None
+
+        labels = validated_data.pop('labels') if 'labels' in validated_data else None
+        categories = validated_data.get('categories') if 'categories' in validated_data else None
         images = self.initial_data.get('images')
         files = self.initial_data.get('files')
+
         note = Note.objects.create(**validated_data)
         if labels:
             for label in labels:
@@ -67,6 +67,10 @@ class NoteSerializer(serializers.ModelSerializer):
             for f in files:
                 file = File.objects.get(pk=f['id'])
                 note.files.add(file)
+        if categories:
+            for c in categories:
+                category = Category.objects.get(pk=c['id'])
+                note.categories.add(category)
         return note
 
     def update(self, instance, validated_data):
