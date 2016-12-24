@@ -1,11 +1,13 @@
+from django.contrib.auth.models import User
+from django.shortcuts import render
 from rest_framework import permissions
+from rest_framework import viewsets
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from .models import Note, Label, Category, Image, File
 from .permissions import IsOwnerOrDenial
 from .serializers import NoteSerializer, LabelSerializer, CategorySerializer, \
-    ImageSerializer, FileSerializer
-from django.shortcuts import render
+    ImageSerializer, FileSerializer, UserSerializer
 
 
 class NoteList(ListCreateAPIView):
@@ -116,3 +118,11 @@ class FileList(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user instances.
+    """
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
