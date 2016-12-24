@@ -39,175 +39,205 @@
     </ul>
 
     <div class="container">
-        <nav class="deep-purple darken-1">
-            <div class="nav-wrapper row">
-                <div class="brand-logo">
-                    <div class="col s2 offset-s2">
-                        <a href="#" data-activates="slide-out" class="" id="sidenav-btn"><i
-                                class="material-icons">menu</i></a>
-                    </div>
-                    <div class="col s6">
-                        <a href="/" class="">Notes</a>
-                    </div>
-                </div>
-                <form class="col s6 offset-s3 deep-purple darken-2">
-                    <div class="input-field">
-                        <input id="search" type="search" required ng-model="searchText">
-                        <label for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                    </div>
-                </form>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a class="dropdown-button" href="#!"
-                           data-activates="dropdown1">{{ request.user.username }}<i
-                            class="material-icons right">arrow_drop_down</i></a></li>
-                </ul>
-            </div>
-        </nav>
-        <br>
         <div class="row">
-            <div ng-repeat="note in notes | filter:searchText track by note.id">
-                <div class="col s12 m4">
-                    <div class="card medium {[{note.color}]}">
-                        <div class="card-image" ng-if="note.images">
-                            <img ng-repeat="img in note.images | limitTo: 2" src="{[{img.image}]}">
+            <nav class="deep-purple darken-1">
+                <div class="nav-wrapper row">
+                    <div class="brand-logo">
+                        <div class="col s2 offset-s2">
+                            <a href="#" data-activates="slide-out" class="" id="sidenav-btn"><i
+                                    class="material-icons">menu</i></a>
                         </div>
-                        <div class="card-content">
-                            <div ng-repeat="label in note.labels" class="collection-item">
-                                <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
+                        <div class="col s6">
+                            <a href="/" class="">Notes</a>
+                        </div>
+                    </div>
+                    <form class="col s6 offset-s3 deep-purple darken-2">
+                        <div class="input-field">
+                            <input id="search" type="search" required ng-model="searchText">
+                            <label for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a class="dropdown-button" href="#!"
+                               data-activates="dropdown1">{{ request.user.username }}<i
+                                class="material-icons right">arrow_drop_down</i></a></li>
+                    </ul>
+                </div>
+            </nav>
+            <br>
+            <div class="row">
+                <div ng-repeat="note in notes | filter:searchText track by note.id">
+                    <div class="col s12 m3">
+                        <a href="#detailModal" ng-click="noteDetail(note.id)" class="">
+                            <div class="card medium {[{note.color}]}">
+                                <div class="card-image" ng-if="note.images">
+                                    <img ng-repeat="img in note.images | limitTo: 2" src="{[{img.image}]}">
+                                </div>
+                                <div class="card-content">
+                                    <div ng-repeat="label in note.labels" class="collection-item">
+                                        <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
+                                    </div>
+                                    <!-- Display budges at the top of notes-->
+                                    <i class="badge-pad"></i>
+                                    <p>{[{note.text | cut:true:100:' ...'}]}</p>
+                                </div>
+                                <div class="card-action">
+                                    <a href="#" ng-click="editNote(note.id)">Edit</a>
+                                    <a href="#" ng-click="deleteNote(note.id)">Delete</a>
+                                </div>
                             </div>
-                            <!-- Display budges at the top of notes-->
-                            <i class="badge-pad"></i>
-                            <p>{[{note.text | cut:true:100:' ...'}]}</p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#" ng-click="editNote(note.id)">Edit</a>
-                            <a href="#" ng-click="deleteNote(note.id)">Delete</a>
-                        </div>
+                        </a>
+
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="fixed-action-btn horizontal">
-            <!-- Modal Trigger -->
-            <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#noteModal">
-                <i class="large material-icons">mode_edit</i>
-            </a>
-        </div>
-        <!-- Modal Structure -->
-        <div id="noteModal" class="modal modal-fixed-footer">
-            <div class="row">
-                <form class="col s12" ng-submit="sendNote()" name="noteForm">
-                    <div class="modal-content">
+            <div class="fixed-action-btn horizontal">
+                <!-- Modal Trigger -->
+                <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#noteModal"
+                   ng-click="clearCurNote()">
+                    <i class="large material-icons">mode_edit</i>
+                </a>
+            </div>
+            <!-- Modal Structure -->
+            <div id="noteModal" class="modal modal-fixed-footer">
+                <div class="row">
+                    <form class="col s12" ng-submit="sendNote()" name="noteForm">
+                        <div class="modal-content">
 
-                        <div class="row">
-                            <div class="input-field">
+                            <div class="row">
+                                <div class="input-field">
                                 <textarea placeholder="Take a note..." id="note_text" type="text"
                                           class="materialize-textarea" ng-model="curNote.text"
                                 ></textarea>
-                                <label for="note_text">Note text</label>
-                                <div class="file-field input-field col s12">
-                                    <div class="btn">
-                                        <span>File</span>
-                                        <input type="file" ngf-max-size="50MB"
-                                               ngf-select="uploadFiles(curNote.files)" name="file"
-                                               ng-model="curNote.files" multiple>
+                                    <label for="note_text">Note text</label>
+                                    <div class="file-field input-field col s12">
+                                        <div class="btn">
+                                            <span>File</span>
+                                            <input type="file" ngf-max-size="50MB"
+                                                   ngf-select="uploadFiles(curNote.files)" name="file"
+                                                   ng-model="curNote.files" multiple>
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
                                     </div>
-                                    <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text">
+                                    <div class="file-field input-field col s12">
+                                        <div class="btn">
+                                            <span>Image</span>
+                                            <input type="file" name="image" ng-model="curNote.images"
+                                                   accept="image/*" ngf-max-size="50MB"
+                                                   ngf-select="uploadImages(curNote.images)"
+                                                   multiple>
+                                        </div>
+                                        <br>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="file-field input-field col s12">
-                                    <div class="btn">
-                                        <span>Image</span>
-                                        <input type="file" name="image" ng-model="curNote.images"
-                                               accept="image/*" ngf-max-size="50MB"
-                                               ngf-select="uploadImages(curNote.images)"
-                                               multiple>
+                                    <div class="input-field col s12">
+                                        <select multiple id="label_select" ng-model="curNote.labels"
+                                        >
+                                            <option value="" disabled selected id="def_l">Set labels</option>
+                                            <option ng-repeat="label in labels" ng-value="label">{[{label.name}]}
+                                            </option>
+                                        </select>
+                                        <label>Labels</label>
                                     </div>
+                                    <div class="input-field col s12">
+                                        <select multiple id="category_select" ng-model="curNote.categories"
+                                                ng-options="c.name for c in categories">
+                                            <option value="" disabled selected>Add categories</option>
+                                        </select>
+                                        {[{activateSelect()}]}
+                                        <label>Categories</label>
+                                    </div>
+                                    <div class="input-field col s12 m4">
+                                        <select id="color_select" ng-model="curNote.color">
+                                            <option value="" disabled selected>Color</option>
+                                            <option ng-repeat="color in colors" value="{[{color.class}]}">
+                                                {[{color.color}]}
+                                            </option>
+                                        </select>
+                                        {[{activateSelect()}]}
+                                        <label>Note color</label>
+                                    </div>
+                                    <div class="col s12">
+                                        <img ngf-thumbnail="image.image" class="thumb"
+                                             ng-repeat="image in curNote.images">
+                                    </div>
+
                                     <br>
-                                    <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text">
+                                    <div class="chip" ng-repeat="file in curNote.files">
+                                        <a href="{[{file.file}]}"><i class="material-icons">code</i>File</a>
                                     </div>
                                 </div>
-                                <div class="input-field col s12">
-                                    <select multiple id="label_select" ng-model="curNote.labels"
-                                    >
-                                        <option value="" disabled selected id="def_l">Set labels</option>
-                                        <option ng-repeat="label in labels" ng-value="label">{[{label.name}]}
-                                        </option>
-                                    </select>
-                                    <label>Labels</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">
+                                Save
+                            </button>
+                            <button class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Label Modal Structure -->
+            <div id="labelModal" class="modal">
+                <form class="col s12" ng-submit="sendLabel()">
+                    <div class="modal-content">
+                        <h4>Create/Edit label</h4>
+                        <div class="row">
+                            <div class="col s12" ng-if="!curLabel.id">
+                                Create new label:
+                                <div class="input-field inline">
+                                    <input id="label" type="text" class="" ng-model="curLabel.name">
+                                    <label for="label">Label</label>
                                 </div>
-                                <div class="input-field col s12">
-                                    <select multiple id="category_select" ng-model="curNote.categories"
-                                            ng-options="c.name for c in categories">
-                                        <option value="" disabled selected>Add categories</option>
-                                    </select>
-                                    {[{activateSelect()}]}
-                                    <label>Categories</label>
-                                </div>
-                                <div class="input-field col s12">
-                                    <select id="color_select" ng-model="curNote.color">
-                                        <option value="" disabled selected>Color</option>
-                                        <option ng-repeat="color in colors" value="{[{color.class}]}">
-                                            {[{color.color}]}
-                                        </option>
-                                    </select>
-                                    {[{activateSelect()}]}
-                                    <label>Note color</label>
-                                </div>
-                                <img ngf-thumbnail="image.image" class="thumb"
-                                     ng-repeat="image in curNote.images">
-                                <br>
-                                <div class="chip" ng-repeat="file in curNote.files">
-                                    <a href="{[{file.file}]}"><i class="material-icons">code</i>File</a>
+                            </div>
+                            <div class="col s12" ng-if="curLabel.id">
+                                Create new label:
+                                <div class="input-field inline">
+                                    <input id="label" type="text" class="" ng-model="curLabel.name">
+                                    <label for="label">Label</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"
+                                type="submit">
                             Save
                         </button>
-                        <button class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</button>
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel
+                        </button>
                     </div>
                 </form>
             </div>
-        </div>
 
-        <!-- Label Modal Structure -->
-        <div id="labelModal" class="modal">
-            <form class="col s12" ng-submit="sendLabel()">
+            <!-- Detail Modal -->
+            <div id="detailModal" class="modal col s12 m4 offset-m2">
                 <div class="modal-content">
-                    <h4>Create/Edit label</h4>
-                    <div class="row">
-                        <div class="col s12" ng-if="!curLabel.id">
-                            Create new label:
-                            <div class="input-field inline">
-                                <input id="label" type="text" class="" ng-model="curLabel.name">
-                                <label for="label">Label</label>
-                            </div>
-                        </div>
-                        <div class="col s12" ng-if="curLabel.id">
-                            Create new label:
-                            <div class="input-field inline">
-                                <input id="label" type="text" class="" ng-model="curLabel.name">
-                                <label for="label">Label</label>
-                            </div>
-                        </div>
+                    <div ng-repeat="img in curNote.images">
+                        <a href="{[{img.image}]}"><img src="{[{img.image}]}" class="responsive-img"></a>
                     </div>
+
+                    <br>
+                    <p>{[{curNote.text}]}</p>
+                    <div ng-repeat="label in curNote.labels" class="collection-item">
+                        <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat" type="submit">
-                        Save
-                    </button>
-                    <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel
-                    </button>
+                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+
 </div>
 
 
