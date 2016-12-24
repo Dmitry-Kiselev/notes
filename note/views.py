@@ -21,7 +21,7 @@ class NoteList(ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
 
     def get_queryset(self):
-        return Note.objects.filter(owner=self.request.user.pk)
+        return Note.objects.filter(owner=self.request.user.pk) | Note.objects.filter(shared_with=self.request.user.pk)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
