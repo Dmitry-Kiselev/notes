@@ -138,30 +138,6 @@
                                           class="materialize-textarea" ng-model="curNote.text"
                                 ></textarea>
                                     <label for="note_text">Note text</label>
-                                    <div class="file-field input-field col s12">
-                                        <div class="btn">
-                                            <span>File</span>
-                                            <input type="file" ngf-max-size="50MB"
-                                                   ngf-select="uploadFiles(curNote.files)" name="file"
-                                                   ng-model="curNote.files" multiple>
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="file-field input-field col s12">
-                                        <div class="btn">
-                                            <span>Image</span>
-                                            <input type="file" name="image" ng-model="curNote.images"
-                                                   accept="image/*" ngf-max-size="50MB"
-                                                   ngf-select="uploadImages(curNote.images)"
-                                                   multiple>
-                                        </div>
-                                        <br>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
                                     <div class="input-field col s12">
                                         <select multiple id="label_select" ng-model="curNote.labels"
                                         >
@@ -179,6 +155,29 @@
                                         {[{activateSelect()}]}
                                         <label>Categories</label>
                                     </div>
+                                    <div class="file-field input-field col s12 m6">
+                                        <div class="btn">
+                                            <span>File</span>
+                                            <input type="file" ngf-max-size="50MB"
+                                                   ngf-select="uploadFiles(curNote.files)" name="file"
+                                                   ng-model="curNote.files" multiple>
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="file-field input-field col s12 m6">
+                                        <div class="btn">
+                                            <span>Image</span>
+                                            <input type="file" name="image" ng-model="curNote.images"
+                                                   accept="image/*" ngf-max-size="50MB"
+                                                   ngf-select="uploadImages(curNote.images)"
+                                                   multiple>
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
                                     <div class="input-field col s12 m4">
                                         <select id="color_select" ng-model="curNote.color">
                                             <option value="" disabled selected>Color</option>
@@ -189,15 +188,18 @@
                                         {[{activateSelect()}]}
                                         <label>Note color</label>
                                     </div>
+
                                     <div class="col s12">
                                         <img ngf-thumbnail="image.image" class="thumb"
                                              ng-repeat="image in curNote.images">
                                     </div>
-
-                                    <br>
-                                    <div class="chip" ng-repeat="file in curNote.files">
-                                        <a href="{[{file.file}]}"><i class="material-icons">code</i>File</a>
+                                    <div class="col s12">
+                                        <span class="new badge white" data-badge-caption=""
+                                              ng-repeat="file in curNote.files">
+                                            <a href="{[{file.file}]}"><i class="material-icons">description</i>{[{file.file.substring(file.file.lastIndexOf('/')+1)}]}</a>
+                                        </span>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -327,8 +329,6 @@
                     </div>
                 </form>
             </div>
-
-
         </div>
     </div>
 
