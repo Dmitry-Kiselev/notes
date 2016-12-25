@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
@@ -91,7 +93,10 @@ class CategoryDetails(RetrieveUpdateDestroyAPIView):
 
 
 def index(request):
-    return render(request, 'note/index.html')
+    if request.user.is_authenticated:
+        return render(request, 'note/index.html')
+    else:
+        return HttpResponseRedirect(reverse('auth:auth'))
 
 
 class ImageList(ListCreateAPIView):
