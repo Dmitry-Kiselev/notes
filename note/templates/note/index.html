@@ -313,13 +313,15 @@
                                                     class="material-icons">delete</i></a>
                                         </li>
                                     </ul>
+                                    <div ng-if="!shareFlag" class="centered">
+                                        <h5>You didn't share anything!</h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"
-                                type="submit" ng-click="sendSharedWith()">
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">
                             OK
                         </button>
                     </div>

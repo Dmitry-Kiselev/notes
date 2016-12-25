@@ -40,6 +40,7 @@ angular.module('noteApp')
     $scope.notes = [];
     $scope.curNote = {};
     $scope.curLabel = {};
+    $scope.shareFlag = false;
 
 
     angular.element(document).ready(function() {
@@ -210,18 +211,24 @@ angular.module('noteApp')
         $scope.sendSharedWith = function() {
             if ($scope.shareObj.user && $scope.shareObj.note) {
                 noteFactory.userManager().update($scope.shareObj);
+                var index = $scope.notes.findIndex(x => x.id == $scope.shareObj.note);
+                $scope.notes[index].shared_with.push($scope.users.indexOf($scope.shareObj.user)+1);
             }
         };
 
         $scope.filterFn = function(item) {
             // must have array, and array must be empty
-            return item.shared_with && item.shared_with.length != 0;
+            if (item.shared_with && item.shared_with.length != 0){
+                $scope.shareFlag = true;
+                return true;
+            }
         };
 
         $scope.deleteShare = function(note_id, user_id) {
-            var index = $scope.notes[note_id].shared_with.indexOf(user_id);
+            var note_index = $scope.notes.findIndex(x => x.id == note_id);
+            var index = $scope.notes[note_index].shared_with.indexOf(user_id);
             if (index >= 0) {
-                arr.splice(index, 1);
+                $scope.notes[note_index].shared_with.splice(index, 1);
             }
             var shareRelation = {
                 'note': note_id,
