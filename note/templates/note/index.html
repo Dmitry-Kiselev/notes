@@ -75,7 +75,24 @@
             </nav>
             <br>
             <div class="row">
-                <div ng-repeat="note in notes | filter:searchText track by note.id">
+
+                <div class="centered">
+                    <div class="preloader-wrapper big active" ng-if="!showNotes">
+                        <div class="spinner-layer spinner-blue">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-repeat="note in notes | filter:searchText track by note.id" ng-if="showNotes">
                     <div class="col s12 m3">
                         <a href="#detailModal" ng-click="noteDetail(note.id)" class="">
                             <div class="card medium {[{note.color}]}">
@@ -101,6 +118,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="fixed-action-btn horizontal">
                 <!-- Modal Trigger -->
                 <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#noteModal"
