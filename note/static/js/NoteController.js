@@ -97,7 +97,6 @@ angular.module('noteApp')
             } else {
                 noteFactory.notesManager().save($scope.curNote, function(response) {
                     $scope.notes.push(response);
-                    $scope.curNote = response;
                 });
             }
             $scope.curNote = {};
@@ -235,6 +234,21 @@ angular.module('noteApp')
                 'user': user_id
             };
             noteFactory.userManager().delete(shareRelation);
+        };
+
+        $scope.deleteCategoriesAndLabels = function (type, id) {
+            var manager = null;
+            if (type == 'label'){
+                manager = noteFactory.labelsManager();
+                 var index = $scope.labels.findIndex(x => x.id == id);
+                 $scope.labels.pop(index);
+            }
+            if (type == 'category'){
+                manager = noteFactory.categoriesManager();
+                var index = $scope.categories.findIndex(x => x.id == id);
+                $scope.categories.pop(index);
+            }
+            manager.delete({id: id});
         }
     });
 });
