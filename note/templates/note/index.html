@@ -103,6 +103,9 @@
                                     <div ng-repeat="label in note.labels" class="collection-item">
                                         <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
                                     </div>
+                                    <div ng-repeat="category in note.categories" class="collection-item">
+                                        <span class="new badge yellow teal-text text-darken-4" data-badge-caption="">{[{category.name}]}</span>
+                                    </div>
                                     <!-- Display budges at the top of notes-->
                                     <i class="badge-pad"></i>
                                     <p>{[{note.text | cut:true:100:' ...'}]}</p>
