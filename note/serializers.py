@@ -4,7 +4,7 @@ from .models import Note, Label, Category, Image, File
 
 
 class LabelSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()  # to make id field accessible
+    id = serializers.IntegerField(required=False)  # to make id field accessible
     owner = serializers.ReadOnlyField(source='owner.id')
 
     class Meta:
@@ -13,8 +13,9 @@ class LabelSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()  # to make id field accessible
+    id = serializers.IntegerField(required=False)  # to make id field accessible
     owner = serializers.ReadOnlyField(source='owner.id')
+    parent = serializers.ReadOnlyField(required=False, source='parent.id')
 
     class Meta:
         model = Category
