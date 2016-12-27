@@ -39,6 +39,7 @@ angular.module('noteApp')
     $scope.notes = [];
     $scope.curNote = {};
     $scope.curLabel = {};
+    $scope.curCategory = {};
     $scope.shareFlag = false;
 
 
@@ -281,5 +282,13 @@ angular.module('noteApp')
                 }
             }
         };
+
+        $scope.sendCategory = function() {
+            noteFactory.categoriesManager().save($scope.curCategory, function(response) {
+                $scope.categories.push(response);
+            });
+            $scope.curCategory = {};
+        };
+
     });
 });
