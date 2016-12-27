@@ -119,6 +119,7 @@ angular.module('noteApp')
             var index = $scope.notes.findIndex(x => x.id == id);
             $scope.curNote = $scope.notes[index];
             var labels = [];
+            var categories = [];
             /* we need to do this, because in select statement angular compares entire objects
             and even if they have same properties they do not match*/
             for (var l in $scope.curNote.labels) {
@@ -128,7 +129,15 @@ angular.module('noteApp')
                     }
                 }
             }
+            for (var l in $scope.curNote.categories) {
+                for (var i in $scope.categories) {
+                    if ($scope.curNote.categories[l].id == $scope.categories[i].id) {
+                        categories.push($scope.categories[i])
+                    }
+                }
+            }
             $scope.curNote.labels = labels;
+            $scope.curNote.categories = categories;
             $('#noteModal').modal('open');
         };
 
