@@ -148,9 +148,10 @@
                                         <label>Labels</label>
                                     </div>
                                     <div class="input-field col s12">
-                                        <select multiple id="category_select" ng-model="curNote.categories"
-                                                ng-options="c.name for c in categories">
+                                        <select multiple id="category_select" ng-model="curNote.categories">
                                             <option value="" disabled selected>Add categories</option>
+                                            <option ng-repeat="category in categories" ng-value="category">
+                                                {[{makeCategoryTree(category.parent) + category.name}]}
                                         </select>
                                         {[{activateSelect()}]}
                                         <label>Categories</label>
