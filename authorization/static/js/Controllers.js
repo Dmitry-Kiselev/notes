@@ -44,7 +44,6 @@ angular.module('authApp')
                                 // Materialize.toast(message, displayLength, className, completeCallback);
                                 Materialize.toast($scope.userdata.errors[error], 4000, 'rounded'); // 4000 is the duration of the toast
                             }
-
                         }
                         else {
                             $window.location = '/';
