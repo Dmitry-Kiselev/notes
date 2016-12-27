@@ -81,7 +81,7 @@ class CategoryList(ListCreateAPIView):
         try:
             parent_id = self.request.data['parent']['id']
             parent = Category.objects.get(pk=parent_id)
-        except KeyError:
+        except Exception:
             parent = None
         serializer.save(owner=self.request.user, parent=parent)
 
