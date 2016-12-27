@@ -51,23 +51,27 @@ angular.module('noteApp')
         $('select').material_select();
 
         $scope.notes = noteFactory.notesManager().query(
+
             function() {
                 $scope.showNotes = true;
             }
         );
         $scope.labels = noteFactory.labelsManager().query(
+
             function() {
                 $scope.showLabels = true;
 
             }
         );
         $scope.categories = noteFactory.categoriesManager().query(
+
             function() {
                 $scope.showCategories = true;
             }
         );
 
         $scope.users = noteFactory.userManager().query(
+
             function() {
                 $scope.showUsers = true;
                 $scope.userObj = {};
@@ -132,12 +136,14 @@ angular.module('noteApp')
             if ($scope.curLabel.id) {
                 noteFactory.labelsManager().update({
                     id: $scope.curLabel.id
-                }, $scope.curLabel);
-                var index = $scope.labels.findIndex(x => x.id == $scope.curLabel.id);
-                $scope.labels[index] = $scope.curLabel;
+                }, $scope.curLabel, function(response) {
+                    var index = $scope.labels.findIndex(x => x.id == $scope.curLabel.id);
+                    $scope.labels[index] = response;
+                });
             } else {
-                noteFactory.labelsManager().save($scope.curLabel);
-                $scope.labels.push($scope.curLabel);
+                noteFactory.labelsManager().save($scope.curLabel, function(response) {
+                    $scope.labels.push(response);
+                });
             }
             $scope.curLabel = {};
         };
@@ -211,13 +217,13 @@ angular.module('noteApp')
             if ($scope.shareObj.user && $scope.shareObj.note) {
                 noteFactory.userManager().update($scope.shareObj);
                 var index = $scope.notes.findIndex(x => x.id == $scope.shareObj.note);
-                $scope.notes[index].shared_with.push($scope.users.indexOf($scope.shareObj.user)+1);
+                $scope.notes[index].shared_with.push($scope.users.indexOf($scope.shareObj.user) + 1);
             }
         };
 
         $scope.filterFn = function(item) {
             // must have array, and array must be empty
-            if (item.shared_with && item.shared_with.length != 0){
+            if (item.shared_with && item.shared_with.length != 0) {
                 $scope.shareFlag = true;
                 return true;
             }
@@ -236,19 +242,36 @@ angular.module('noteApp')
             noteFactory.userManager().delete(shareRelation);
         };
 
-        $scope.deleteCategoriesAndLabels = function (type, id) {
+        $scope.deleteCategoriesAndLabels = function(type, id) {
             var manager = null;
-            if (type == 'label'){
+            if (type == 'label') {
                 manager = noteFactory.labelsManager();
-                 var index = $scope.labels.findIndex(x => x.id == id);
-                 $scope.labels.pop(index);
+                var index = $scope.labels.findIndex(x => x.id == id);
+                $scope.labels.pop(index);
             }
-            if (type == 'category'){
+            if (type == 'category') {
                 manager = noteFactory.categoriesManager();
                 var index = $scope.categories.findIndex(x => x.id == id);
                 $scope.categories.pop(index);
             }
-            manager.delete({id: id});
-        }
+            manager.delete({
+                id: id
+            });
+        };
+
+        $scope.makeCategoryTree = function(parent_id) {
+
+            if (!parent_id) {
+                return "";
+            }
+            for (var c in $scope.categories) {
+                var cat = $scope.categories[c];
+                if (cat.id == parent_id && cat.parent) {
+                    return cat.name + " >> " + $scope.makeCategoryTree(cat.parent);
+                } else {
+                    return cat.name + " >> ";
+                }
+            }
+        };
     });
 });
