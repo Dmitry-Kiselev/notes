@@ -36,7 +36,7 @@
             <li><a href="#!" ng-click="setFilter(category.name)"><i class="material-icons">label</i>{[{category.name}]}</a>
             </li>
         </ul>
-        <li><a href="#">Add new category</a></li>
+        <li><a href="#CategoryModal">Add new category</a></li>
         <li>
             <div class="divider"></div>
         </li>
@@ -142,8 +142,7 @@
                                 ></textarea>
                                     <label for="note_text">Note text</label>
                                     <div class="input-field col s12">
-                                        <select multiple id="label_select" ng-model="curNote.labels"
-                                        >
+                                        <select multiple id="label_select" ng-model="curNote.labels">
                                             <option value="" disabled selected id="def_l">Set labels</option>
                                             <option ng-repeat="label in labels" ng-value="label">{[{label.name}]}
                                             </option>
@@ -337,9 +336,43 @@
                     </div>
                 </form>
             </div>
+
+
+            <!-- Category Modal Structure -->
+            <div id="CategoryModal" class="modal">
+                <form class="col s12" ng-submit="sendCategory()">
+                    <div class="modal-content">
+                        <h4>Create new category</h4>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="input-field inline col s8">
+                                    <select id="parent" ng-model="curCategory.parent">
+                                        <option value="" disabled selected>Select parent category</option>
+                                        <option ng-repeat="category in categories" ng-value="category">
+                                            {[{makeCategoryTree(category.parent) + category.name}]}
+                                    </select>
+                                    {[{activateSelect()}]}
+                                    <label for="parent">Parent category</label>
+                                </div>
+                                <div class="input-field inline col s4">
+                                    <input id="category" type="text" class="" ng-model="curCategory.name">
+                                    <label for="category">Category</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"
+                                type="submit">
+                            Save
+                        </button>
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
 </div>
 
 
