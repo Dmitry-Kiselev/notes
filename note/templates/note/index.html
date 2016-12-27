@@ -23,6 +23,7 @@
 
     <ul id="slide-out" class="side-nav">
         <li><a class="subheader">Labels</a></li>
+        <li><a ng-click="editModal('labels')" href="#"> <i class="material-icons">mode_edit</i> EDIT</a></li>
         <ul ng-repeat="label in labels">
             <li><a href="#!" ng-click="setFilter(label.name)"><i class="material-icons">label</i>{[{label.name}]}</a>
             </li>
@@ -32,11 +33,12 @@
             <div class="divider">Categories</div>
         </li>
         <li><a class="subheader">Categories</a></li>
+        <li><a ng-click="editModal('categories')" href="#"> <i class="material-icons">mode_edit</i> EDIT</a></li>
         <ul ng-repeat="category in categories">
             <li><a href="#!" ng-click="setFilter(category.name)"><i class="material-icons">label</i>{[{category.name}]}</a>
             </li>
         </ul>
-        <li><a href="#">Add new category</a></li>
+        <li><a href="#CategoryModal">Add new category</a></li>
         <li>
             <div class="divider"></div>
         </li>
@@ -103,6 +105,9 @@
                                     <div ng-repeat="label in note.labels" class="collection-item">
                                         <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
                                     </div>
+                                    <div ng-repeat="category in note.categories" class="collection-item">
+                                        <span class="new badge yellow teal-text text-darken-4" data-badge-caption="">{[{category.name}]}</span>
+                                    </div>
                                     <!-- Display budges at the top of notes-->
                                     <i class="badge-pad"></i>
                                     <p>{[{note.text | cut:true:100:' ...'}]}</p>
@@ -139,8 +144,7 @@
                                 ></textarea>
                                     <label for="note_text">Note text</label>
                                     <div class="input-field col s12">
-                                        <select multiple id="label_select" ng-model="curNote.labels"
-                                        >
+                                        <select multiple id="label_select" ng-model="curNote.labels">
                                             <option value="" disabled selected id="def_l">Set labels</option>
                                             <option ng-repeat="label in labels" ng-value="label">{[{label.name}]}
                                             </option>
@@ -148,9 +152,10 @@
                                         <label>Labels</label>
                                     </div>
                                     <div class="input-field col s12">
-                                        <select multiple id="category_select" ng-model="curNote.categories"
-                                                ng-options="c.name for c in categories">
+                                        <select multiple id="category_select" ng-model="curNote.categories">
                                             <option value="" disabled selected>Add categories</option>
+                                            <option ng-repeat="category in categories" ng-value="category">
+                                                {[{makeCategoryTree(category.parent) + category.name}]}
                                         </select>
                                         {[{activateSelect()}]}
                                         <label>Categories</label>
@@ -249,6 +254,10 @@
             <!-- Detail Modal -->
             <div id="detailModal" class="modal col s12 m4 offset-m2">
                 <div class="modal-content">
+                    <div ng-repeat="category in curNote.categories" class="collection-item">
+                        <span class="new badge yellow teal-text text-darken-4"
+                              data-badge-caption="">{[{category.name}]}</span>
+                    </div>
                     <div ng-repeat="img in curNote.images">
                         <a href="{[{img.image}]}"><img src="{[{img.image}]}" class="responsive-img"></a>
                     </div>
@@ -329,9 +338,74 @@
                     </div>
                 </form>
             </div>
+
+
+            <!-- Category Modal Structure -->
+            <div id="CategoryModal" class="modal">
+                <form class="col s12" ng-submit="sendCategory()">
+                    <div class="modal-content">
+                        <h4>Create new category</h4>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="input-field inline col s8">
+                                    <select id="parent" ng-model="curCategory.parent">
+                                        <option value="" disabled selected>Select parent category</option>
+                                        <option ng-repeat="category in categories" ng-value="category">
+                                            {[{makeCategoryTree(category.parent) + category.name}]}
+                                    </select>
+                                    {[{activateSelect()}]}
+                                    <label for="parent">Parent category</label>
+                                </div>
+                                <div class="input-field inline col s4">
+                                    <input id="category" type="text" class="" ng-model="curCategory.name">
+                                    <label for="category">Category</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"
+                                type="submit">
+                            Save
+                        </button>
+                        <button href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
+            <!-- Edit Labels/Categories Modal Structure -->
+            <div id="editLabelsCategoriesModal" class="modal">
+                <div class="modal-content">
+                    <div ng-if="editModalLabels">
+                        <h4>Edit labels</h4>
+                        <ul class="collection">
+                            <li ng-repeat="label in labels" class="collection-item">
+                                {[{label.name}]}<a href="#!"
+                                                   class="secondary-content"
+                                                   ng-click="deleteCategoriesAndLabels('label', label.id)"><i
+                                    class="material-icons">delete</i></a></li>
+                        </ul>
+                    </div>
+                    <div ng-if="editModalCategories">
+                        <h4>Edit categories</h4>
+                        <ul class="collection">
+                            <li ng-repeat="category in categories" class="collection-item">{[{category.name}]}
+                                <a href="#!"
+                                   class="secondary-content"
+                                   ng-click="deleteCategoriesAndLabels('category', category.id)"><i
+                                        class="material-icons">delete</i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+                </div>
+            </div>
+
         </div>
     </div>
-
 </div>
 
 

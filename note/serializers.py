@@ -4,6 +4,7 @@ from .models import Note, Label, Category, Image, File
 
 
 class LabelSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)  # to make id field accessible
     owner = serializers.ReadOnlyField(source='owner.id')
 
     class Meta:
@@ -12,11 +13,13 @@ class LabelSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)  # to make id field accessible
     owner = serializers.ReadOnlyField(source='owner.id')
+    parent = serializers.ReadOnlyField(required=False, source='parent.id')
 
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ('id', 'name', 'owner', 'parent',)
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -40,10 +43,9 @@ class FileSerializer(serializers.ModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
     labels = LabelSerializer(many=True, required=False)
-    categories = CategorySerializer(many=True, read_only=True)
+    categories = CategorySerializer(many=True, required=False)
     images = ImageSerializer(many=True, read_only=True)
     files = FileSerializer(many=True, read_only=True)
-    #shared_with = serializers.ReadOnlyField()
 
     class Meta:
         model = Note
@@ -52,7 +54,9 @@ class NoteSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
 
         labels = validated_data.pop('labels') if 'labels' in validated_data else None
-        categories = validated_data.get('categories') if 'categories' in validated_data else None
+        categories = validated_data.pop('categories') if 'categories' in validated_data else None  # we have to use pop
+        # to make sure what categories won't be in validated_data, because note's method save() must to be called
+        # before adding ManyToMany relations. Same for labels.
         images = self.initial_data.get('images')
         files = self.initial_data.get('files')
 
@@ -79,7 +83,7 @@ class NoteSerializer(serializers.ModelSerializer):
             labels = validated_data.pop('labels')
             images = self.initial_data.get('images')
             files = self.initial_data.get('files')
-            categories = validated_data.get('categories')
+            categories = validated_data.pop('categories')
             instance.color = validated_data.pop('color')
             instance.text = validated_data.pop('text')
             instance.labels.clear()
