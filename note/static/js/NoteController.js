@@ -5,7 +5,7 @@
 
 angular.module('noteApp')
 
-.controller('NoteController', function($scope, $resource, noteFactory, Upload, $timeout) {
+.controller('NoteController', function($scope, $resource, noteFactory, Upload,) {
 
     var DEFAULT_COLOR = "blue-grey darken-1";
 
