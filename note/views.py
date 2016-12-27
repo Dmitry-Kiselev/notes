@@ -78,7 +78,8 @@ class CategoryList(ListCreateAPIView):
         return Category.objects.filter(owner=self.request.user.pk)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        parent = Category.objects.get(pk=self.request.data['parent']['id'])
+        serializer.save(owner=self.request.user, parent=parent)
 
 
 class CategoryDetails(RetrieveUpdateDestroyAPIView):
