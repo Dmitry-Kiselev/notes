@@ -290,5 +290,17 @@ angular.module('noteApp')
             $scope.curCategory = {};
         };
 
+        $scope.editModal = function (type) {
+            if (type == 'labels'){
+                $scope.editModalLabels = true;
+                $scope.editModalCategories = false;
+            }
+            if (type == 'categories'){
+                $scope.editModalCategories = true;
+                $scope.editModalLabels = false;
+            }
+            $('#editLabelsCategoriesModal').modal('open');
+        }
+
     });
 });

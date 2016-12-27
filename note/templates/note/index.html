@@ -23,6 +23,7 @@
 
     <ul id="slide-out" class="side-nav">
         <li><a class="subheader">Labels</a></li>
+        <li><a ng-click="editModal('labels')" href="#"> <i class="material-icons">mode_edit</i> EDIT</a></li>
         <ul ng-repeat="label in labels">
             <li><a href="#!" ng-click="setFilter(label.name)"><i class="material-icons">label</i>{[{label.name}]}</a>
             </li>
@@ -32,6 +33,7 @@
             <div class="divider">Categories</div>
         </li>
         <li><a class="subheader">Categories</a></li>
+        <li><a ng-click="editModal('categories')" href="#"> <i class="material-icons">mode_edit</i> EDIT</a></li>
         <ul ng-repeat="category in categories">
             <li><a href="#!" ng-click="setFilter(category.name)"><i class="material-icons">label</i>{[{category.name}]}</a>
             </li>
@@ -371,6 +373,37 @@
                     </div>
                 </form>
             </div>
+
+
+            <!-- Edit Labels/Categories Modal Structure -->
+            <div id="editLabelsCategoriesModal" class="modal">
+                <div class="modal-content">
+                    <div ng-if="editModalLabels">
+                        <h4>Edit labels</h4>
+                        <ul class="collection">
+                            <li ng-repeat="label in labels" class="collection-item">
+                                {[{label.name}]}<a href="#!"
+                                                   class="secondary-content"
+                                                   ng-click="deleteCategoriesAndLabels('label', label.id)"><i
+                                    class="material-icons">delete</i></a></li>
+                        </ul>
+                    </div>
+                    <div ng-if="editModalCategories">
+                        <h4>Edit categories</h4>
+                        <ul class="collection">
+                            <li ng-repeat="category in categories" class="collection-item">{[{category.name}]}
+                                <a href="#!"
+                                   class="secondary-content"
+                                   ng-click="deleteCategoriesAndLabels('category', category.id)"><i
+                                        class="material-icons">delete</i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
