@@ -78,7 +78,11 @@ class CategoryList(ListCreateAPIView):
         return Category.objects.filter(owner=self.request.user.pk)
 
     def perform_create(self, serializer):
-        parent = Category.objects.get(pk=self.request.data['parent']['id'])
+        try:
+            parent_id = self.request.data['parent']['id']
+            parent = Category.objects.get(pk=parent_id)
+        except KeyError:
+            parent = None
         serializer.save(owner=self.request.user, parent=parent)
 
 
