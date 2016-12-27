@@ -253,6 +253,10 @@
             <!-- Detail Modal -->
             <div id="detailModal" class="modal col s12 m4 offset-m2">
                 <div class="modal-content">
+                    <div ng-repeat="category in curNote.categories" class="collection-item">
+                        <span class="new badge yellow teal-text text-darken-4"
+                              data-badge-caption="">{[{category.name}]}</span>
+                    </div>
                     <div ng-repeat="img in curNote.images">
                         <a href="{[{img.image}]}"><img src="{[{img.image}]}" class="responsive-img"></a>
                     </div>
