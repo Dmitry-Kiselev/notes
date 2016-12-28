@@ -157,7 +157,7 @@ angular.module('noteApp')
                 noteFactory.labelsManager().save($scope.curLabel, function(response) {
                     $scope.labels.push(response);
                 });
-                $scope.showInfo('Note created');
+                $scope.showInfo('Label created');
             }
             $scope.curLabel = {};
         };
