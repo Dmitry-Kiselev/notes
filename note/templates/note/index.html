@@ -269,6 +269,7 @@
                     </div>
 
                     <br>
+                    <h4 ng-if="curNote.title">{[{curNote.title}]}</h4>
                     <p>{[{curNote.text}]}</p>
                     <div ng-repeat="label in curNote.labels" class="collection-item">
                         <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
