@@ -49,7 +49,7 @@ class NoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Note
-        fields = ('id', 'owner', 'text', 'labels', 'categories', 'images', 'files', 'color', 'shared_with',)
+        fields = ('id', 'owner', 'text', 'labels', 'categories', 'images', 'files', 'color', 'shared_with', 'title')
 
     def create(self, validated_data):
 
@@ -85,6 +85,7 @@ class NoteSerializer(serializers.ModelSerializer):
             files = self.initial_data.get('files')
             categories = validated_data.pop('categories')
             instance.color = validated_data.pop('color')
+            instance.title = validated_data.pop('title')
             instance.text = validated_data.pop('text')
             instance.labels.clear()
             instance.images.clear()
