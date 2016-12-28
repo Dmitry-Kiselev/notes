@@ -78,8 +78,12 @@
             <br>
             <div class="row">
 
+                <div class="centered" ng-if="!notes.length && notes.$resolved">
+                    <h5>You didn't note anything!</h5>
+                </div>
+
                 <div class="centered">
-                    <div class="preloader-wrapper big active" ng-if="!showNotes">
+                    <div class="preloader-wrapper big active" ng-if="!notes && !notes.$resolved">
                         <div class="spinner-layer spinner-blue">
                             <div class="circle-clipper left">
                                 <div class="circle"></div>
@@ -94,7 +98,7 @@
                     </div>
                 </div>
 
-                <div ng-repeat="note in notes | filter:searchText track by note.id" ng-if="showNotes">
+                <div ng-repeat="note in notes | filter:searchText track by note.id" ng-if="notes && notes.$resolved">
                     <div class="col s12 m3">
                         <a href="#detailModal" ng-click="noteDetail(note.id)" class="">
                             <div class="{[{note.color}]}" ng-class="note.images.length ? 'card large' : 'card'">
