@@ -98,10 +98,12 @@ angular.module('noteApp')
                 });
                 var index = $scope.notes.findIndex(x => x.id == $scope.curNote.id);
                 $scope.notes[index] = $scope.curNote;
+                $scope.showInfo('Note updated');
             } else {
                 noteFactory.notesManager().save($scope.curNote, function(response) {
                     $scope.notes.push(response);
                 });
+                $scope.showInfo('Note created');
             }
             $scope.curNote = {};
         };
@@ -112,6 +114,7 @@ angular.module('noteApp')
             });
             var index = $scope.notes.findIndex(x => x.id == id);
             $scope.notes.pop(index);
+            $scope.showInfo('Note deleted');
         };
 
 
@@ -149,10 +152,12 @@ angular.module('noteApp')
                     var index = $scope.labels.findIndex(x => x.id == $scope.curLabel.id);
                     $scope.labels[index] = response;
                 });
+                $scope.showInfo('Label updated');
             } else {
                 noteFactory.labelsManager().save($scope.curLabel, function(response) {
                     $scope.labels.push(response);
                 });
+                $scope.showInfo('Note created');
             }
             $scope.curLabel = {};
         };
@@ -227,6 +232,7 @@ angular.module('noteApp')
                 noteFactory.userManager().update($scope.shareObj);
                 var index = $scope.notes.findIndex(x => x.id == $scope.shareObj.note);
                 $scope.notes[index].shared_with.push($scope.users.indexOf($scope.shareObj.user) + 1);
+                $scope.showInfo('Note shared with ' + $scope.shareObj.user);
             }
         };
 
@@ -249,6 +255,7 @@ angular.module('noteApp')
                 'user': user_id
             };
             noteFactory.userManager().delete(shareRelation);
+            $scope.showInfo('Note deleted');
         };
 
         $scope.deleteCategoriesAndLabels = function(type, id) {
@@ -266,6 +273,7 @@ angular.module('noteApp')
             manager.delete({
                 id: id
             });
+            $scope.showInfo('Deleted');
         };
 
         $scope.makeCategoryTree = function(parent_id) {
@@ -288,6 +296,7 @@ angular.module('noteApp')
                 $scope.categories.push(response);
             });
             $scope.curCategory = {};
+            $scope.showInfo('Category created');
         };
 
         $scope.editModal = function (type) {
@@ -300,6 +309,11 @@ angular.module('noteApp')
                 $scope.editModalLabels = false;
             }
             $('#editLabelsCategoriesModal').modal('open');
+        };
+        
+        $scope.showInfo = function (message) {
+             // Materialize.toast(message, displayLength, className, completeCallback);
+             Materialize.toast(message, 4000); // 4000 is the duration of the toast
         }
 
     });

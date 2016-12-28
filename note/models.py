@@ -14,6 +14,7 @@ colors = (
 
 
 class Note(models.Model):
+    title = models.CharField(max_length=120, null=True, blank=True)
     text = models.TextField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     color = models.CharField(choices=colors, max_length=20, default='blue-grey darken-1')
