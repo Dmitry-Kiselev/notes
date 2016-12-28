@@ -97,7 +97,7 @@
                 <div ng-repeat="note in notes | filter:searchText track by note.id" ng-if="showNotes">
                     <div class="col s12 m3">
                         <a href="#detailModal" ng-click="noteDetail(note.id)" class="">
-                            <div class="card medium {[{note.color}]}">
+                            <div class="{[{note.color}]}" ng-class="note.images.length ? 'card large' : 'card'">
                                 <div class="card-image" ng-if="note.images">
                                     <img ng-repeat="img in note.images | limitTo: 2" src="{[{img.image}]}">
                                 </div>
@@ -110,6 +110,7 @@
                                     </div>
                                     <!-- Display budges at the top of notes-->
                                     <i class="badge-pad"></i>
+                                    <h4 class="truncate" ng-if="note.title">{[{note.title}]}</h4>
                                     <p>{[{note.text | cut:true:100:' ...'}]}</p>
                                 </div>
                                 <div class="card-action">
@@ -136,13 +137,16 @@
                 <div class="row">
                     <form class="col s12" ng-submit="sendNote()" name="noteForm">
                         <div class="modal-content">
-
                             <div class="row">
                                 <div class="input-field">
-                                <textarea placeholder="Take a note..." id="note_text" type="text"
-                                          class="materialize-textarea" ng-model="curNote.text"
-                                ></textarea>
-                                    <label for="note_text">Note text</label>
+                                    <div class="input-field col s12">
+                                        <input placeholder="Note title" id="title" type="text" class="validate"
+                                               ng-model="curNote.title">
+                                        <label for="title">Note title</label>
+                                    </div>
+                                    <textarea placeholder="Take a note..." id="note_text" type="text"
+                                              class="materialize-textarea" ng-model="curNote.text"
+                                    ></textarea>
                                     <div class="input-field col s12">
                                         <select multiple id="label_select" ng-model="curNote.labels">
                                             <option value="" disabled selected id="def_l">Set labels</option>
@@ -258,8 +262,10 @@
                         <span class="new badge yellow teal-text text-darken-4"
                               data-badge-caption="">{[{category.name}]}</span>
                     </div>
-                    <div ng-repeat="img in curNote.images">
-                        <a href="{[{img.image}]}"><img src="{[{img.image}]}" class="responsive-img"></a>
+                    <div class="row">
+                        <div ng-repeat="img in curNote.images" class="col s{[{12/curNote.images.length}]}">
+                            <a href="{[{img.image}]}"><img src="{[{img.image}]}" class="responsive-img"></a>
+                        </div>
                     </div>
 
                     <br>
