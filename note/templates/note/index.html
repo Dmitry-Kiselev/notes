@@ -98,7 +98,8 @@
                     </div>
                 </div>
 
-                <div ng-repeat="note in notes | filter:searchText track by note.id" ng-if="notes && notes.$resolved">
+                <div ng-repeat="note in notes | filter:searchText track by note.id"
+                     ng-if="notes && notes.$resolved && showNotes">
                     <div class="col s12 m3">
                         <a href="#detailModal" ng-click="noteDetail(note.id)" class="">
                             <div class="{[{note.color}]}" ng-class="note.images.length ? 'card large' : 'card'">
