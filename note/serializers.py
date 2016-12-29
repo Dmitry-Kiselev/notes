@@ -63,7 +63,7 @@ class NoteSerializer(serializers.ModelSerializer):
         note = Note.objects.create(**validated_data)
         if labels:
             for label in labels:
-                note.labels.add(Label.objects.get(name=label["name"]))
+                note.labels.add(Label.objects.get(id=label["id"]))
         if images:
             for img in images:
                 image = Image.objects.get(pk=img['id'])
@@ -91,7 +91,7 @@ class NoteSerializer(serializers.ModelSerializer):
             instance.images.clear()
             instance.files.clear()
             for label in labels:
-                instance.labels.add(Label.objects.get(name=label["name"]))
+                instance.labels.add(Label.objects.get(pk=label["id"]))
             if images:
                 for img in images:
                     image = Image.objects.get(pk=img['id'])
