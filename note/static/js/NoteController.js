@@ -102,8 +102,8 @@ angular.module('noteApp')
             } else {
                 noteFactory.notesManager().save($scope.curNote, function(response) {
                     $scope.notes.push(response);
+                    $scope.showInfo('Note created');
                 });
-                $scope.showInfo('Note created');
             }
             $scope.curNote = {};
         };
