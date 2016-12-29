@@ -10,6 +10,7 @@ from rest_framework.reverse import reverse
 from rest_framework import status
 
 from .forms import RegistrationForm, LoginForm
+from note.models import Label, Category
 
 
 @api_view(['GET', 'POST'])
@@ -25,8 +26,12 @@ def auth(request, format=None):
                     new_user = authenticate(username=data['username'],
                                             password=data['password1'],
                                             )
+                    Label(name='Personal', owner=new_user).save()  # Create default labels and categories for new user.
+                    #  Items created this way can be easily deleted by the user
+                    Label(name='Work', owner=new_user).save()
+                    Category(name='Important', owner=new_user).save()
+                    Category(name='Funny', owner=new_user).save()
                     login(request, new_user)
-                    #return Response({'notes': reverse('note:notes_list', request=request, format=format)})
                     return Response(status=status.HTTP_200_OK)
                 else:
                     return Response({'has_error': True, 'errors': registration_form.error_messages})
@@ -44,5 +49,4 @@ def auth(request, format=None):
         }
         return render(request, 'authorization/authForm.html', obj)
     else:
-        #return Response({'notes': reverse('note:notes_list', request=request, format=format)})
         return HttpResponseRedirect('/')
