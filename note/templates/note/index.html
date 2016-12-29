@@ -118,9 +118,12 @@
                                     <p>{[{note.text | cut:true:100:' ...'}]}</p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="#" ng-click="shareNote(note.id)">Share</a>
-                                    <a href="#" ng-click="editNote(note.id)">Edit</a>
-                                    <a href="#" ng-click="deleteNote(note.id)">Delete</a>
+                                    <a href="#" ng-click="shareNote(note.id)"
+                                       ng-if="note.owner == {{ request.user.id }}">Share</a>
+                                    <a href="#" ng-click="editNote(note.id)"
+                                       ng-if="note.owner == {{ request.user.id }}">Edit</a>
+                                    <a href="#" ng-click="deleteNote(note.id)"
+                                       ng-if="note.owner == {{ request.user.id }}">Delete</a>
                                 </div>
                             </div>
                         </a>
