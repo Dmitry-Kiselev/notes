@@ -23,6 +23,9 @@ class NoteList(ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
 
     def get_queryset(self):
+        """
+        get notes which user owned or shared with current user
+        """
         return Note.objects.filter(owner=self.request.user.pk) | Note.objects.filter(shared_with=self.request.user.pk)
 
     def perform_create(self, serializer):
@@ -145,12 +148,18 @@ class ListUsers(APIView):
         return Response(usernames)
 
     def put(self, request, format=None):
+        """
+        to delegate note to another user
+        """
         note = Note.objects.get(pk=self.request.data.get('note'))
         user = self.request.data.get('user')
         note.shared_with.add(User.objects.get(username=user))
         return Response(status=status.HTTP_201_CREATED)
 
     def delete(self, request, format=None):
+        """
+        to delete delegation relation
+        """
         note = Note.objects.get(pk=self.request.query_params['note'])
         user = self.request.query_params['user']
         note.shared_with.remove(user)

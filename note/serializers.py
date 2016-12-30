@@ -4,7 +4,7 @@ from .models import Note, Label, Category, Image, File
 
 
 class LabelSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)  # to make id field accessible
+    id = serializers.IntegerField(required=False)  # to make id field accessible in validated_data
     owner = serializers.ReadOnlyField(source='owner.id')
 
     class Meta:
@@ -13,7 +13,7 @@ class LabelSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)  # to make id field accessible
+    id = serializers.IntegerField(required=False)  # to make id field accessible in validated_data
     owner = serializers.ReadOnlyField(source='owner.id')
     parent = serializers.ReadOnlyField(required=False, source='parent.id')
 
@@ -87,6 +87,7 @@ class NoteSerializer(serializers.ModelSerializer):
             instance.color = validated_data.pop('color')
             instance.title = validated_data.pop('title')
             instance.text = validated_data.pop('text')
+            # delete all ManyToMany relations and recreate them if they still exists, and add new one
             instance.labels.clear()
             instance.images.clear()
             instance.files.clear()
