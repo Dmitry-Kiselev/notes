@@ -403,6 +403,7 @@
                 <div class="modal-content">
                     <div ng-if="editModalLabels">
                         <h4>Manage labels</h4>
+                        <h5 class="centered" ng-if="!categories.length"> You didn't create any label.</h5>
                         <ul class="collection">
                             <li ng-repeat="label in labels" class="collection-item">
                                 {[{label.name}]}<a href="#!"
@@ -412,6 +413,7 @@
                         </ul>
                     </div>
                     <div ng-if="editModalCategories">
+                        <h5 class="centered" ng-if="!categories.length"> You didn't create any category.</h5>
                         <h4>Manage categories</h4>
                         <ul class="collection">
                             <li ng-repeat="category in categories" class="collection-item">{[{category.name}]}
@@ -423,6 +425,7 @@
                     </div>
                     <div ng-if="editModalImages">
                         <h4>Manage images</h4>
+                        <h5 class="centered" ng-if="!images.length"> You didn't upload any image.</h5>
                         <ul class="collection row">
                             <li ng-repeat="img in images" class="collection-item col s12 imageList"><img
                                     src="{[{img.image}]}" class="card-thumb imageItem"/>
@@ -434,7 +437,8 @@
                     </div>
                     <div ng-if="editModalFiles">
                         <h4>Manage files</h4>
-                        <ul class="collection">
+                        <h5 class="centered" ng-if="!files.length"> You didn't upload any file.</h5>
+                        <ul class="collection" ng-if="files">
                             <li ng-repeat="f in files" class="collection-item">
                                 {[{f.file.substring(f.file.lastIndexOf('/')+1)}]}
                                 <a href="#!"
