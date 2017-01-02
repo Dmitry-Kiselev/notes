@@ -33,3 +33,11 @@ a:link {
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+
+.imageItem {
+    float:left;
+}
+
+.imageList {
+    display: inline-block;
+}
