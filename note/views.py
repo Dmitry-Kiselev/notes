@@ -121,6 +121,17 @@ class ImageList(ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
+class ImageDetails(RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a image instance.
+    """
+    serializer_class = ImageSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
+
+    def get_queryset(self):
+        return Image.objects.filter(owner=self.request.user.pk)
+
+
 class FileList(ListCreateAPIView):
     """
     List all files, or create a new one.
@@ -133,6 +144,17 @@ class FileList(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class FileDetails(RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a label instance.
+    """
+    serializer_class = FileSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrDenial,)
+
+    def get_queryset(self):
+        return File.objects.filter(owner=self.request.user.pk)
 
 
 class ListUsers(APIView):
