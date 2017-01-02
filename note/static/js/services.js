@@ -19,4 +19,10 @@ angular.module('noteApp')
         this.userManager = function () {
             return $resource(baseURL + "users/:id", null, {'update': {method: 'PUT'}});
         };
+        this.imagesManager = function () {
+            return $resource(baseURL + "images/:id", null, {'update': {method: 'PUT'}});
+        };
+        this.filesManager = function () {
+            return $resource(baseURL + "files/:id", null, {'update': {method: 'PUT'}});
+        };
     }]);
