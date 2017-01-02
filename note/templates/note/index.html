@@ -290,6 +290,14 @@
                     <div ng-repeat="label in curNote.labels" class="collection-item">
                         <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
                     </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="new badge white" data-badge-caption=""
+                                  ng-repeat="file in curNote.files">
+                                <a href="{[{file.file}]}"><i class="material-icons">description</i>{[{file.file.substring(file.file.lastIndexOf('/')+1)}]}</a>
+                            </span>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
