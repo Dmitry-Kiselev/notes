@@ -33,4 +33,5 @@ http://dmitrykiselev.pythonanywhere.com/
 ## Known issues ##
 <ul>
     <li>[authorization] if the user enters weak password - wrong error message displays (password_mismatch).</li>
+    <li>[authorization] sometimes it's quite difficult to get focus on username field. Probably related to django-material.</li>
 </ul>
