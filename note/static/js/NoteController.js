@@ -46,7 +46,6 @@ angular.module('noteApp')
         angular.element(document).ready(function() {
             // Initialize collapse button
             $("#sidenav-btn").sideNav();
-            // Initialize collapsible (uncomment the line below if you use the dropdown variation)
             $('.modal').modal();
             $('select').material_select();
 
@@ -74,6 +73,7 @@ angular.module('noteApp')
 
                 function() {
                     $scope.showUsers = true;
+                    // make the object to store all usernames in a form needed to use with autocomplete
                     $scope.userObj = {};
                     for (var i in $scope.users) {
                         $scope.userObj[$scope.users[i]] = null;
@@ -85,14 +85,27 @@ angular.module('noteApp')
             );
 
             $scope.activateSelect = function() {
+                /*
+                this function must be called after page load,
+                because there are the bug then using
+                materialize with angular: statement must be
+                activated after angular loaded data
+                to populate that statement
+                 */
                 $('select').material_select();
             };
 
             $scope.sendNote = function() {
-                if ($scope.curNote.id) {
+                /*
+                 before send, function will choose proper HTTP method
+                 depending on object fields: only server can give id field to the note,
+                 so if it has it - we send existing note, we will use PUT method.
+                 */
+                if ($scope.curNote.id) { // existing notes have id field
                     noteFactory.notesManager().update({
                         id: $scope.curNote.id
                     }, $scope.curNote, function(response) {
+                        // find the old note in the list and replace with a new one
                         var index = $scope.notes.findIndex(x => x.id == $scope.curNote.id);
                         $scope.notes[index] = response;
                     });
@@ -101,6 +114,7 @@ angular.module('noteApp')
                     $scope.showInfo('Note updated');
                 } else {
                     noteFactory.notesManager().save($scope.curNote, function(response) {
+                        // use response to provide correct and complete object with all required fields including id
                         $scope.notes.push(response);
                         $scope.showInfo('Note created');
                     });
@@ -109,6 +123,9 @@ angular.module('noteApp')
             };
 
             $scope.deleteNote = function(id) {
+                /*
+                delete note from server and the note list
+                 */
                 noteFactory.notesManager().delete({
                     id: id
                 });
@@ -119,7 +136,7 @@ angular.module('noteApp')
 
 
             $scope.editNote = function(id) {
-                var index = $scope.notes.findIndex(x => x.id == id);
+                var index = $scope.notes.findIndex(x => x.id == id); // find note object for editing by id
                 $scope.curNote = $scope.notes[index];
                 var labels = [];
                 var categories = [];
@@ -145,6 +162,7 @@ angular.module('noteApp')
             };
 
             $scope.sendLabel = function() {
+                // same as for sendNote
                 if ($scope.curLabel.id) {
                     noteFactory.labelsManager().update({
                         id: $scope.curLabel.id
@@ -166,6 +184,7 @@ angular.module('noteApp')
             $scope.uploadFiles = function(type, files) {
                 var url = '';
                 var dataObj = {};
+                // choose url depending on file type
                 if (type == 'file') {
                     url = '/files/';
                 }
@@ -190,10 +209,12 @@ angular.module('noteApp')
                             method: 'POST'
                         }).then(function(response) {
                             if (type == 'file') {
+                                // replace FILE with json object to properly process it on server
                                 $scope.curNote.files.pop(i);
                                 $scope.curNote.files.push(response.data);
                             }
                             if (type == 'image') {
+                                // same as for file
                                 $scope.curNote.images.pop(i);
                                 $scope.curNote.images.push(response.data);
                             }
@@ -203,10 +224,15 @@ angular.module('noteApp')
             };
 
             $scope.setFilter = function(name) {
+                /*
+                to change note's filter;
+                can be used to filter notes by labels or categories
+                 */
                 $scope.searchText = name;
             };
 
             $scope.noteDetail = function(id) {
+                // find note and display it in detailModal
                 var index = $scope.notes.findIndex(x => x.id == id);
                 $scope.curNote = $scope.notes[index];
                 $('#detailModal').modal();
@@ -217,6 +243,10 @@ angular.module('noteApp')
             };
 
             $scope.shareNote = function(id) {
+                /*
+                create object to store shared note's id and user to share it with
+                user field populates by using mg-model directive in template
+                 */
                 $scope.shareObj = {
                     'note': id
                 };
@@ -233,7 +263,8 @@ angular.module('noteApp')
             };
 
             $scope.filterFn = function(item) {
-                // must have array, and array must be empty
+                // to check is the note shared with someone
+                // must have array, and array must be not empty
                 if (item.shared_with && item.shared_with.length != 0) {
                     $scope.shareFlag = true;
                     return true;
@@ -244,17 +275,22 @@ angular.module('noteApp')
                 var note_index = $scope.notes.findIndex(x => x.id == note_id);
                 var index = $scope.notes[note_index].shared_with.indexOf(user_id);
                 if (index >= 0) {
-                    $scope.notes[note_index].shared_with.splice(index, 1);
+                    $scope.notes[note_index].shared_with.splice(index, 1); // delete sharing relation from the note object
                 }
                 var shareRelation = {
                     'note': note_id,
                     'user': user_id
                 };
-                noteFactory.userManager().delete(shareRelation);
-                $scope.showInfo('Note deleted');
+                noteFactory.userManager().delete(shareRelation); // // delete sharing relation from the server
+                $scope.showInfo('Deleted');
             };
 
             $scope.deleteContent = function(type, id) {
+                /*
+                to delete any type of content created by the user except notes.
+                Notes have their own function.
+                Deletes content from server and client sides.
+                 */
                 var manager = null;
                 if (type == 'label') {
                     manager = noteFactory.labelsManager();
@@ -283,6 +319,11 @@ angular.module('noteApp')
             };
 
             $scope.makeCategoryTree = function(parent_id) {
+                /*
+                Categories have a tree structure, so we need to display it in some way to the user.
+                Because there are no widgets which can do that, easiest way is display all hierarchy
+                in the category name.
+                 */
 
                 if (!parent_id) {
                     return "";
@@ -306,6 +347,9 @@ angular.module('noteApp')
             };
 
             $scope.editUserContentModal = function(type) {
+                /*
+                use the same modal to display different types of content
+                 */
                 if (type == 'labels') {
                     $scope.editModalLabels = true;
                     $scope.editModalCategories = false;
