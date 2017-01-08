@@ -162,45 +162,41 @@ angular.module('noteApp')
                 $scope.curLabel = {};
             };
 
-            // for multiple images:
-            $scope.uploadImages = function(files) {
-                var clear = true;
-                if (files && files.length) {
-                    for (var i = 0; i < files.length; i++) {
-                        Upload.upload({
-                            data: {
-                                image: files[i]
-                            },
-                            url: '/images/',
-                            method: 'POST'
-                        }).then(function(response) {
-                            if (clear) {
-                                $scope.curNote.images = [];
-                                clear = false;
-                            }
-                            $scope.curNote.images.push(response.data);
-                        });
-                    }
-                }
-            };
-
             // for multiple files upload:
-            $scope.uploadFiles = function(files) {
-                var clear = true;
+            $scope.uploadFiles = function(type, files) {
+                var url = '';
+                var dataObj = {};
+                if (type == 'file') {
+                    url = '/files/';
+                }
+                if (type == 'image') {
+                    url = '/images/';
+                }
                 if (files && files.length) {
                     for (var i = 0; i < files.length; i++) {
-                        Upload.upload({
-                            data: {
+                        if (type == 'file') {
+                            dataObj = {
                                 file: files[i]
-                            },
-                            url: '/files/',
+                            };
+                        }
+                        if (type == 'image') {
+                            dataObj = {
+                                image: files[i]
+                            };
+                        }
+                        Upload.upload({
+                            data: dataObj,
+                            url: url,
                             method: 'POST'
                         }).then(function(response) {
-                            if (clear) {
-                                $scope.curNote.files = [];
-                                clear = false;
+                            if (type == 'file') {
+                                $scope.curNote.files.pop(i);
+                                $scope.curNote.files.push(response.data);
                             }
-                            $scope.curNote.files.push(response.data);
+                            if (type == 'image') {
+                                $scope.curNote.images.pop(i);
+                                $scope.curNote.images.push(response.data);
+                            }
                         });
                     }
                 }

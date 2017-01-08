@@ -184,7 +184,7 @@
                                         <div class="btn">
                                             <span>File</span>
                                             <input type="file" ngf-max-size="50MB"
-                                                   ngf-select="uploadFiles(curNote.files)" name="file"
+                                                   ngf-select="uploadFiles('file', curNote.files)" name="file"
                                                    ng-model="curNote.files" multiple>
                                         </div>
                                         <div class="file-path-wrapper">
@@ -196,7 +196,7 @@
                                             <span>Image</span>
                                             <input type="file" name="image" ng-model="curNote.images"
                                                    accept="image/*" ngf-max-size="50MB"
-                                                   ngf-select="uploadImages(curNote.images)"
+                                                   ngf-select="uploadFiles('image', curNote.images)"
                                                    multiple>
                                         </div>
                                         <div class="file-path-wrapper">
