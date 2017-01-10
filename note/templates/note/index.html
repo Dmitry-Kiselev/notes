@@ -206,7 +206,8 @@
                                     <div class="input-field col s12 m4">
                                         <select id="color_select" ng-model="curNote.color">
                                             <option value="" disabled selected>Color</option>
-                                            <option ng-repeat="color in colors" value="{[{color.class}]}">{[{color.color}]}</option>
+                                            <option ng-repeat="color in colors" value="{[{color.class}]}" class="circle"
+                                                    data-icon="/static/images/colors/{[{color.color}]}.png">{[{color.color}]}</option>
                                         </select>
                                         {[{activateSelect()}]}
                                         <label for="color_select">Note color</label>
