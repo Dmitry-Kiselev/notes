@@ -156,13 +156,15 @@
                             <div class="row">
                                 <div class="input-field">
                                     <div class="input-field col s12">
-                                        <input placeholder="Note title" id="title" type="text" class="validate"
+                                        <input id="title" type="text" class="validate"
                                                ng-model="curNote.title">
                                         <label for="title">Note title</label>
                                     </div>
-                                    <textarea placeholder="Take a note..." id="note_text" type="text"
-                                              class="materialize-textarea" ng-model="curNote.text"
-                                    ></textarea>
+                                    <div class="input-field col s12">
+                                        <textarea id="note_text" type="text"
+                                              class="materialize-textarea" ng-model="curNote.text"></textarea>
+                                    <label for="note_text">Note text</label>
+                                    </div>
                                     <div class="input-field col s12">
                                         <select multiple id="label_select" ng-model="curNote.labels">
                                             <option value="" disabled selected id="def_l">Set labels</option>
