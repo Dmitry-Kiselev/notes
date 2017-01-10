@@ -168,16 +168,14 @@
                                     <div class="input-field col s12 m6">
                                         <select multiple id="label_select" ng-model="curNote.labels">
                                             <option value="" disabled selected id="def_l">Set labels</option>
-                                            <option ng-repeat="label in labels" ng-value="label">{[{label.name}]}
-                                            </option>
+                                            <option ng-repeat="label in labels" ng-value="label">{[{label.name.trim()}]}</option>
                                         </select>
                                         <label>Labels</label>
                                     </div>
                                     <div class="input-field col s12 m6">
                                         <select multiple id="category_select" ng-model="curNote.categories">
                                             <option value="" disabled selected>Add categories</option>
-                                            <option ng-repeat="category in categories" ng-value="category">
-                                                {[{makeCategoryTree(category.parent) + category.name}]}
+                                            <option ng-repeat="category in categories" ng-value="category">{[{makeCategoryTree(category.parent) + category.name}]}</option>
                                         </select>
                                         {[{activateSelect()}]}
                                         <label>Categories</label>
