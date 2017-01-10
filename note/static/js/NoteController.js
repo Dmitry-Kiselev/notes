@@ -120,6 +120,7 @@ angular.module('noteApp')
                     });
                 }
                 $scope.curNote = {};
+                $('#noteModal').modal('close');
             };
 
             $scope.deleteNote = function(id) {

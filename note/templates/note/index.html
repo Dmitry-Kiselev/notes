@@ -161,7 +161,7 @@
                                         <label for="title">Note title</label>
                                     </div>
                                     <div class="input-field col s12">
-                                        <textarea id="note_text" type="text"
+                                        <textarea id="note_text" type="text" required
                                               class="materialize-textarea" ng-model="curNote.text"></textarea>
                                     <label for="note_text">Note text</label>
                                     </div>
@@ -170,7 +170,7 @@
                                             <option value="" disabled selected id="def_l">Set labels</option>
                                             <option ng-repeat="label in labels" ng-value="label">{[{label.name.trim()}]}</option>
                                         </select>
-                                        <label>Labels</label>
+                                        <label for="label_select">Labels</label>
                                     </div>
                                     <div class="input-field col s12 m6">
                                         <select multiple id="category_select" ng-model="curNote.categories">
@@ -178,7 +178,7 @@
                                             <option ng-repeat="category in categories" ng-value="category">{[{makeCategoryTree(category.parent) + category.name}]}</option>
                                         </select>
                                         {[{activateSelect()}]}
-                                        <label>Categories</label>
+                                        <label for="category_select">Categories</label>
                                     </div>
                                     <div class="file-field input-field col s12 m6">
                                         <div class="btn">
@@ -206,12 +206,10 @@
                                     <div class="input-field col s12 m4">
                                         <select id="color_select" ng-model="curNote.color">
                                             <option value="" disabled selected>Color</option>
-                                            <option ng-repeat="color in colors" value="{[{color.class}]}">
-                                                {[{color.color}]}
-                                            </option>
+                                            <option ng-repeat="color in colors" value="{[{color.class}]}">{[{color.color}]}</option>
                                         </select>
                                         {[{activateSelect()}]}
-                                        <label>Note color</label>
+                                        <label for="color_select">Note color</label>
                                     </div>
 
                                     <div class="col s12">
@@ -229,7 +227,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">
+                            <button class="modal-action waves-effect waves-green btn-flat" type="submit">
                                 Save
                             </button>
                             <button class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</button>
