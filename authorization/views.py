@@ -34,14 +34,28 @@ def auth(request, format=None):
                     login(request, new_user)
                     return Response(status=status.HTTP_200_OK)
                 else:
-                    return Response({'has_error': True, 'errors': registration_form.error_messages})
+                    errors = []
+                    for err_dict in registration_form.errors:
+                        try:
+                            for err in registration_form.errors[err_dict]:
+                                errors.append(err)
+                        except Exception as e:
+                            Response({'has_error': True, 'errors': e})
+                    return Response({'has_error': True, 'errors': errors})
             else:
                 login_form = LoginForm(data=data)
                 if login_form.is_valid():
                     login(request, login_form.get_user())
                     return Response({'notes': reverse('note:notes_list', request=request, format=format)})
                 else:
-                    return Response({'has_error': True, 'errors': login_form.error_messages})
+                    errors = []
+                    for err_dict in login_form.errors:
+                        try:
+                            for err in login_form.errors[err_dict]:
+                                errors.append(err)
+                        except Exception as e:
+                            Response({'has_error': True, 'errors': e})
+                    return Response({'has_error': True, 'errors': errors})
 
         obj = {
             'login_form': login_form if login_form else LoginForm(),
