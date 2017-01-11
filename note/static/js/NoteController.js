@@ -160,6 +160,9 @@ angular.module('noteApp')
                 $scope.curNote.labels = labels;
                 $scope.curNote.categories = categories;
                 $('#noteModal').modal('open');
+                setTimeout(function() {
+                    Materialize.updateTextFields();  // to fix trouble with the labels overlapping prefilled content
+                }, 500);
             };
 
             $scope.sendLabel = function() {
