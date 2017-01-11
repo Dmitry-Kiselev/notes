@@ -42,7 +42,7 @@ angular.module('authApp')
 
                             for (var error in $scope.userdata.errors) {
                                 // Materialize.toast(message, displayLength, className, completeCallback);
-                                Materialize.toast($scope.userdata.errors[error], 4000, 'rounded'); // 4000 is the duration of the toast
+                                Materialize.toast($scope.userdata.errors[error], 10000); // 10000 is the duration of the toast
                             }
                         }
                         else {
