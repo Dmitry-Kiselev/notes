@@ -123,7 +123,7 @@
                                     </div>
                                     <!-- Display budges at the top of notes-->
                                     <i class="badge-pad"></i>
-                                    <h5 class="truncate" ng-if="note.title">{[{note.title}]}</h5>
+                                    <h6 class="truncate" ng-if="note.title"><b>{[{note.title}]}</b></h6>
                                     <p>{[{note.text | cut:true:100:' ...'}]}</p>
                                 </div>
                                 <div class="card-action">
@@ -284,7 +284,7 @@
                     </div>
 
                     <br>
-                    <h4 ng-if="curNote.title">{[{curNote.title}]}</h4>
+                    <h5 ng-if="curNote.title"><b>{[{curNote.title}]}</b></h5>
                     <p>{[{curNote.text}]}</p>
                     <div ng-repeat="label in curNote.labels" class="collection-item">
                         <span class="new badge" data-badge-caption="">{[{label.name}]}</span>
