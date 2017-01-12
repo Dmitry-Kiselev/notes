@@ -41,6 +41,7 @@ angular.module('noteApp')
         $scope.curLabel = {};
         $scope.curCategory = {};
         $scope.shareFlag = false;
+        $scope.files = [];
 
 
         angular.element(document).ready(function() {
@@ -161,7 +162,7 @@ angular.module('noteApp')
                 $scope.curNote.categories = categories;
                 $('#noteModal').modal('open');
                 setTimeout(function() {
-                    Materialize.updateTextFields();  // to fix trouble with the labels overlapping prefilled content
+                    Materialize.updateTextFields(); // to fix trouble with the labels overlapping prefilled content
                 }, 500);
             };
 
@@ -213,13 +214,9 @@ angular.module('noteApp')
                             method: 'POST'
                         }).then(function(response) {
                             if (type == 'file') {
-                                // replace FILE with json object to properly process it on server
-                                $scope.curNote.files.pop(i);
                                 $scope.curNote.files.push(response.data);
                             }
                             if (type == 'image') {
-                                // same as for file
-                                $scope.curNote.images.pop(i);
                                 $scope.curNote.images.push(response.data);
                             }
                         });
@@ -386,7 +383,31 @@ angular.module('noteApp')
             $scope.showInfo = function(message) {
                 // Materialize.toast(message, displayLength, className, completeCallback);
                 Materialize.toast(message, 4000); // 4000 is the duration of the toast
-            }
+            };
 
+            $scope.confirmAdd = function(type, files) {
+                if ($scope.curNote.files && $scope.curNote.files.length && type == 'file') {
+                    var addFiles = true;
+                }
+                if ($scope.curNote.images && $scope.curNote.images.length && type == 'image') {
+                    var addImg = true;
+                }
+                if (addFiles || addImg) {
+                    if (confirm('Add new files to existing ones?')) {
+                        $scope.uploadFiles(type, files);
+                        $scope.files = [];
+                    }
+                } else {
+                    if (!$scope.curNote.files) {
+                        $scope.curNote.files = [];
+                    }
+                    if (!$scope.curNote.images) {
+                        $scope.curNote.images = [];
+                    }
+                    $scope.uploadFiles(type, files);
+                    $scope.files = [];
+                }
+
+            }
         });
     });
