@@ -393,7 +393,14 @@ angular.module('noteApp')
                     var addImg = true;
                 }
                 if (addFiles || addImg) {
-                    if (confirm('Add new files to existing ones?')) {
+                    var replace = confirm('Add new files to existing ones? Otherwise old files will be deleted.');
+                    if (replace) {
+                        $scope.uploadFiles(type, files);
+                        $scope.files = [];
+                    }
+                    else {
+                        if (addFiles){$scope.curNote.files = [];}
+                        if (addImg){$scope.curNote.images = [];}
                         $scope.uploadFiles(type, files);
                         $scope.files = [];
                     }
