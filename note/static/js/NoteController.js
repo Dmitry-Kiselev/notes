@@ -50,6 +50,7 @@ angular.module('noteApp')
             $('.modal').modal();
             $('select').material_select();
             $('input#title').characterCounter();
+            $('.tooltipped').tooltip({delay: 50});
 
             $scope.notes = noteFactory.notesManager().query(
 

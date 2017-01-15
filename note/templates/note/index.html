@@ -162,20 +162,24 @@
                                     </div>
                                     <div class="input-field col s12">
                                         <textarea id="note_text" type="text" required
-                                              class="materialize-textarea" ng-model="curNote.text"></textarea>
-                                    <label for="note_text">Note text</label>
+                                                  class="materialize-textarea" ng-model="curNote.text"></textarea>
+                                        <label for="note_text">Note text</label>
                                     </div>
                                     <div class="input-field col s12 m6">
                                         <select multiple id="label_select" ng-model="curNote.labels">
                                             <option value="" disabled selected id="def_l">Set labels</option>
-                                            <option ng-repeat="label in labels" ng-value="label">{[{label.name.trim()}]}</option>
+                                            <option ng-repeat="label in labels" ng-value="label">
+                                                {[{label.name.trim()}]}
+                                            </option>
                                         </select>
                                         <label for="label_select">Labels</label>
                                     </div>
                                     <div class="input-field col s12 m6">
                                         <select multiple id="category_select" ng-model="curNote.categories">
                                             <option value="" disabled selected>Add categories</option>
-                                            <option ng-repeat="category in categories" ng-value="category">{[{makeCategoryTree(category.parent) + category.name}]}</option>
+                                            <option ng-repeat="category in categories" ng-value="category">
+                                                {[{makeCategoryTree(category.parent) + category.name}]}
+                                            </option>
                                         </select>
                                         {[{activateSelect()}]}
                                         <label for="category_select">Categories</label>
@@ -183,8 +187,10 @@
                                     <div class="file-field input-field col s12 m6">
                                         <div class="btn">
                                             <span>File</span>
-                                            <input type="file" ngf-max-size="50MB"
+                                            <input type="file" ngf-max-size="50MB" class="tooltipped"
+                                                   data-position="bottom" data-delay="50" data-tooltip="50 MB per note"
                                                    ngf-select="confirmAdd('file', files)" name="file"
+                                                   ngf-max-size="50B"
                                                    ng-model="files" multiple>
                                         </div>
                                         <div class="file-path-wrapper">
@@ -194,7 +200,8 @@
                                     <div class="file-field input-field col s12 m6">
                                         <div class="btn">
                                             <span>Image</span>
-                                            <input type="file" name="image" ng-model="files"
+                                            <input type="file" name="image" ng-model="files" class="tooltipped"
+                                                   data-position="bottom" data-delay="50" data-tooltip="50 MB per note"
                                                    accept="image/*" ngf-max-size="50MB"
                                                    ngf-select="confirmAdd('image', files)"
                                                    multiple>
@@ -207,7 +214,9 @@
                                         <select id="color_select" ng-model="curNote.color">
                                             <option value="" disabled selected>Color</option>
                                             <option ng-repeat="color in colors" value="{[{color.class}]}" class="circle"
-                                                    data-icon="/static/images/colors/{[{color.color}]}.png">{[{color.color}]}</option>
+                                                    data-icon="/static/images/colors/{[{color.color}]}.png">
+                                                {[{color.color}]}
+                                            </option>
                                         </select>
                                         {[{activateSelect()}]}
                                         <label for="color_select">Note color</label>
