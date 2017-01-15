@@ -5,7 +5,7 @@
 
 angular.module('noteApp')
 
-    .controller('NoteController', function($scope, $resource, noteFactory, Upload) {
+    .controller('NoteController', function($scope, $resource, $filter, noteFactory, Upload) {
 
 
         $scope.colors = [{
@@ -225,7 +225,7 @@ angular.module('noteApp')
                             }
                         }, function(response) {
                             if (response.status > 0) {
-                                $scope.errorMsg = response.status + ': ' + response.data;
+                                $scope.showInfo(response.status + ': ' + response.data);
                             }
                         }, function(evt) {
                             $scope.progress =
@@ -428,7 +428,15 @@ angular.module('noteApp')
                     $scope.uploadFiles(type, files);
                     $scope.files = [];
                 }
+            };
 
+            $scope.uploadErrors = function() {
+                for (var i in $scope.errorFile) {
+                    if ($scope.errorFile[i].$errorMessages.maxSize) {
+                        $scope.showInfo('File too large: ' + $filter('number')($scope.errorFile[i].size / 1000000) + " > 50 MB")
+                    }
+                }
+                $scope.errorFile = false;
             }
         });
     });

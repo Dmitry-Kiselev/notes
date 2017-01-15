@@ -190,7 +190,7 @@
                                             <input type="file" ngf-max-size="50MB" class="tooltipped"
                                                    data-position="bottom" data-delay="50" data-tooltip="50 MB per note"
                                                    ngf-select="confirmAdd('file', files)" name="file"
-                                                   ngf-max-size="50B"
+                                                   ngf-max-size="50B" ngf-model-invalid="errorFile"
                                                    ng-model="files" multiple>
                                         </div>
                                         <div class="file-path-wrapper">
@@ -202,7 +202,7 @@
                                             <span>Image</span>
                                             <input type="file" name="image" ng-model="files" class="tooltipped"
                                                    data-position="bottom" data-delay="50" data-tooltip="50 MB per note"
-                                                   accept="image/*" ngf-max-size="50MB"
+                                                   accept="image/*" ngf-max-size="50MB" ngf-model-invalid="errorFile"
                                                    ngf-select="confirmAdd('image', files)"
                                                    multiple>
                                         </div>
@@ -226,6 +226,8 @@
                                         <div class="determinate" style="width: {[{progress}]}%"
                                              ng-bind="progress + '%'"></div>
                                     </div>
+
+                                    <div ng-if="errorFile">{[{uploadErrors()}]}</div>
 
                                     <div class="col s12">
                                         <img ngf-thumbnail="image.image" class="thumb"
