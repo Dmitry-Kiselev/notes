@@ -49,6 +49,7 @@ angular.module('noteApp')
             $("#sidenav-btn").sideNav();
             $('.modal').modal();
             $('select').material_select();
+            $('input#title').characterCounter();
 
             $scope.notes = noteFactory.notesManager().query(
 
