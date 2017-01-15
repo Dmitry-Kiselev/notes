@@ -87,6 +87,8 @@ class NoteSerializer(serializers.ModelSerializer):
             instance.color = validated_data.pop('color')
             instance.title = validated_data.pop('title')
             instance.text = validated_data.pop('text')
+            old_images = [x for x in instance.images.all()]
+            old_files = [x for x in instance.files.all()]
             # delete all ManyToMany relations and recreate them if they still exists, and add new one
             instance.labels.clear()
             instance.images.clear()
@@ -106,4 +108,12 @@ class NoteSerializer(serializers.ModelSerializer):
                     category = Category.objects.get(pk=c['id'])
                     instance.categories.add(category)
             instance.save()
+            for i in old_images:
+                if i not in instance.images.all():
+                    img = Image.objects.get(pk=i.pk)
+                    img.delete()
+            for f in old_files:
+                if f not in instance.files.all():
+                    file = File.objects.get(pk=f.pk)
+                    file.delete()
             return instance
