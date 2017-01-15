@@ -50,7 +50,9 @@ angular.module('noteApp')
             $('.modal').modal();
             $('select').material_select();
             $('input#title').characterCounter();
-            $('.tooltipped').tooltip({delay: 50});
+            $('.tooltipped').tooltip({
+                delay: 50
+            });
 
             $scope.notes = noteFactory.notesManager().query(
 
@@ -221,6 +223,13 @@ angular.module('noteApp')
                             if (type == 'image') {
                                 $scope.curNote.images.push(response.data);
                             }
+                        }, function(response) {
+                            if (response.status > 0) {
+                                $scope.errorMsg = response.status + ': ' + response.data;
+                            }
+                        }, function(evt) {
+                            $scope.progress =
+                                Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                         });
                     }
                 }
@@ -399,10 +408,13 @@ angular.module('noteApp')
                     if (replace) {
                         $scope.uploadFiles(type, files);
                         $scope.files = [];
-                    }
-                    else {
-                        if (addFiles){$scope.curNote.files = [];}
-                        if (addImg){$scope.curNote.images = [];}
+                    } else {
+                        if (addFiles) {
+                            $scope.curNote.files = [];
+                        }
+                        if (addImg) {
+                            $scope.curNote.images = [];
+                        }
                         $scope.uploadFiles(type, files);
                         $scope.files = [];
                     }

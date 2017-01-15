@@ -222,6 +222,11 @@
                                         <label for="color_select">Note color</label>
                                     </div>
 
+                                    <div class="progress" ng-show="progress >= 0 && progress != 100">
+                                        <div class="determinate" style="width: {[{progress}]}%"
+                                             ng-bind="progress + '%'"></div>
+                                    </div>
+
                                     <div class="col s12">
                                         <img ngf-thumbnail="image.image" class="thumb"
                                              ng-repeat="image in curNote.images">
