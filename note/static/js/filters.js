@@ -25,3 +25,9 @@ angular.module('noteApp').filter('cut', function () {
         return value + (tail || ' …');
     };
 });
+
+angular.module('noteApp').filter('reverse', function () {
+    return function (items) {
+        return items.slice().reverse();
+    };
+});
