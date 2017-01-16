@@ -167,18 +167,14 @@
                                     <div class="input-field col s12 m6">
                                         <select multiple id="label_select" ng-model="curNote.labels">
                                             <option value="" disabled selected id="def_l">Set labels</option>
-                                            <option ng-repeat="label in labels" ng-value="label">
-                                                {[{label.name.trim()}]}
-                                            </option>
+                                            <option ng-repeat="label in labels" ng-value="label">{[{label.name.trim()}]}</option>
                                         </select>
                                         <label for="label_select">Labels</label>
                                     </div>
                                     <div class="input-field col s12 m6">
                                         <select multiple id="category_select" ng-model="curNote.categories">
                                             <option value="" disabled selected>Add categories</option>
-                                            <option ng-repeat="category in categories" ng-value="category">
-                                                {[{makeCategoryTree(category.parent) + category.name}]}
-                                            </option>
+                                            <option ng-repeat="category in categories" ng-value="category">{[{makeCategoryTree(category.parent) + category.name}]}</option>
                                         </select>
                                         {[{activateSelect()}]}
                                         <label for="category_select">Categories</label>
@@ -213,9 +209,7 @@
                                         <select id="color_select" ng-model="curNote.color">
                                             <option value="" disabled selected>Color</option>
                                             <option ng-repeat="color in colors" value="{[{color.class}]}" class="circle"
-                                                    data-icon="/static/images/colors/{[{color.color}]}.png">
-                                                {[{color.color}]}
-                                            </option>
+                                                    data-icon="/static/images/colors/{[{color.color}]}.png">{[{color.color}]}</option>
                                         </select>
                                         {[{activateSelect()}]}
                                         <label for="color_select">Note color</label>
