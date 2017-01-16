@@ -45,3 +45,8 @@ a:link {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+
+li>span>label {
+    /*to prevent display item label below checkbox - probably materialize issue */
+    display: inline !important;
+}
