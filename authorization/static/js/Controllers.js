@@ -11,9 +11,6 @@ angular.module('authApp')
             $http.post('', $scope.userdata)
                 .then(
                     function (response) {
-                        //redirecting or something else
-                        $scope.userdata = {};  // to choose correct action in view
-                        // after registration to provide friendly login
                         if (response.data.has_error) {
                             $scope.userdata.errors = response.data.errors;
 
