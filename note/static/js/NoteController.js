@@ -266,6 +266,10 @@ angular.module('noteApp')
             };
 
             $scope.sendSharedWith = function() {
+                if ($.inArray($scope.shareObj.user, $scope.users) == -1){
+                    $scope.showInfo('There are no user with username ' + $scope.shareObj.user);
+                    return false;
+                }
                 if ($scope.shareObj.user && $scope.shareObj.note) {
                     noteFactory.userManager().update($scope.shareObj);
                     var index = $scope.notes.findIndex(x => x.id == $scope.shareObj.note);
