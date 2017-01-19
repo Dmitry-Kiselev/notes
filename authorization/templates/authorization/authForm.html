@@ -16,10 +16,38 @@
                             </ul>
                         </div>
                         <div id="register" class="col s12">
-                            {% form form=registration_form %}{% endform %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="username" type="text" class="validate" ng-model="userdata.username">
+                                    <label for="username">Username</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="email" type="email" class="validate" ng-model="userdata.email">
+                                    <label for="email" data-error="wrong" data-success="right">Email</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="password1" type="password" class="validate"
+                                           ng-model="userdata.password1">
+                                    <label for="password1">Password</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="password2" type="password" class="validate"
+                                           ng-model="userdata.password2">
+                                    <label for="password2">Confirm Password</label>
+                                </div>
+                            </div>
                         </div>
                         <div id="login" class="col s12">
-                            {% form form=login_form %}{% endform %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="username" type="text" class="validate" ng-model="userdata.username">
+                                    <label for="username">Username</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="password" type="password" class="validate" ng-model="userdata.password">
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
