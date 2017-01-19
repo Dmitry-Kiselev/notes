@@ -350,7 +350,7 @@
                             <div class="col s12">
                                 <div class="row">
                                     <ul class="collection with-header"
-                                        ng-repeat="note in notes | filter : filterFn">
+                                        ng-repeat="note in notes" ng-if="CheckIfShared()">
                                         <li class="collection-item avatar" ng-repeat="user in note.shared_with">
                                             <img src="{% static 'images/note.png' %}" alt="" class="circle">
                                             <span class="title truncate">{[{note.text}]}</span>
@@ -362,7 +362,7 @@
                                                     class="material-icons">delete</i></a>
                                         </li>
                                     </ul>
-                                    <div ng-if="!shareFlag" class="centered">
+                                    <div ng-if="!CheckIfShared()" class="centered">
                                         <h5>You didn't share anything!</h5>
                                     </div>
                                 </div>

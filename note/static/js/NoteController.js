@@ -274,15 +274,6 @@ angular.module('noteApp')
                 }
             };
 
-            $scope.filterFn = function(item) {
-                // to check is the note shared with someone
-                // must have array, and array must be not empty
-                if (item.shared_with && item.shared_with.length != 0) {
-                    $scope.shareFlag = true;
-                    return true;
-                }
-            };
-
             $scope.deleteShare = function(note_id, user_id) {
                 var note_index = $scope.notes.findIndex(x => x.id == note_id);
                 var index = $scope.notes[note_index].shared_with.indexOf(user_id);
@@ -437,6 +428,15 @@ angular.module('noteApp')
                     }
                 }
                 $scope.errorFile = false;
-            }
+            };
+
+            $scope.CheckIfShared = function () {
+                for (var i in $scope.notes){
+                    if ($scope.notes[i].shared_with && $scope.notes[i].shared_with.length){
+                        return true;
+                    }
+                }
+                return false;
+            };
         });
     });
