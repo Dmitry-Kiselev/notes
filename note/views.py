@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -26,7 +28,10 @@ class NoteList(ListCreateAPIView):
         """
         get notes which user owned or shared with current user
         """
-        return Note.objects.filter(owner=self.request.user.pk) | Note.objects.filter(shared_with=self.request.user.pk)
+        notes = Note.objects.filter(owner=self.request.user.pk)
+        shared_with_user = Note.objects.filter(shared_with=self.request.user.pk)
+        all_notes = chain(notes, shared_with_user)  # concatenating the querysets
+        return all_notes
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
