@@ -109,7 +109,7 @@ def index(request):
     if request.user.is_authenticated:
         return render(request, 'note/index.html')
     else:
-        return HttpResponseRedirect(reverse('auth:auth'))
+        return HttpResponseRedirect(reverse('auth'))
 
 
 class ImageList(ListCreateAPIView):
