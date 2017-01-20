@@ -171,7 +171,7 @@ class ListUsers(APIView):
         """
         Return a list of all users.
         """
-        usernames = [user.username for user in User.objects.all().exclude(pk=self.request.user.pk)]
+        usernames = [{'id': user.pk, 'name': user.username} for user in User.objects.all().exclude(pk=self.request.user.pk)]
         return Response(usernames)
 
     def put(self, request, format=None):
