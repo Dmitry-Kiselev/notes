@@ -80,8 +80,9 @@ angular.module('noteApp')
                     $scope.showUsers = true;
                     // make the object to store all usernames in a form needed to use with autocomplete
                     $scope.userObj = {};
-                    for (var i in $scope.users) {
-                        $scope.userObj[$scope.users[i]] = null;
+                    $scope.usernames = $scope.users.map(function(a) {return a.name;});
+                    for (var i in $scope.usernames) {
+                        $scope.userObj[$scope.usernames[i]] = null;
                     }
                     $('input.autocomplete').autocomplete({
                         data: $scope.userObj
@@ -266,14 +267,20 @@ angular.module('noteApp')
             };
 
             $scope.sendSharedWith = function() {
-                if ($.inArray($scope.shareObj.user, $scope.users) == -1){
+                var index = $scope.notes.findIndex(x => x.id == $scope.shareObj.note);
+                var user_index = $scope.users.findIndex(x => x.name == $scope.shareObj.user);
+                var user = $scope.users[user_index];
+                if ($.inArray(user.name, $scope.usernames) == -1){
                     $scope.showInfo('There are no user with username ' + $scope.shareObj.user);
+                    return false;
+                }
+                if ($.inArray(user.id, $scope.notes[index].shared_with) != -1){
+                    $scope.showInfo('You already shared this note with ' + $scope.shareObj.user);
                     return false;
                 }
                 if ($scope.shareObj.user && $scope.shareObj.note) {
                     noteFactory.userManager().update($scope.shareObj);
-                    var index = $scope.notes.findIndex(x => x.id == $scope.shareObj.note);
-                    $scope.notes[index].shared_with.push($scope.users.indexOf($scope.shareObj.user) + 1);
+                    $scope.notes[index].shared_with.push($scope.users[user_index].id);
                     $scope.showInfo('Note shared with ' + $scope.shareObj.user);
                 }
             };
