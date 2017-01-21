@@ -11,10 +11,14 @@
     {% include 'material/includes/material_css.html' %}
     {% include 'material/includes/material_js.html' %}
 </head>
-<body ng-app="authApp" class="indigo">
-{% block content %}
+<body ng-app="authApp" class="grey lighten-3">
+<div class="container">
+    {% block breadcrumbs %}
+    {% endblock %}
+    {% block content %}
 
-{% endblock %}
+    {% endblock %}
+</div>
 
 
 <script src="{% static 'bower_components/angular/angular.min.js' %}"></script>
