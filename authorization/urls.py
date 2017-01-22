@@ -17,17 +17,16 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import logout
 
-from .views import auth
+from .views import auth, ResetPasswordRequestView, PasswordResetConfirmView
 
 urlpatterns = [
-    url(r'^password_reset/$', auth_views.password_reset, {'template_name': 'authorization/password_reset_form.html'},
-        name='password_reset'),
+    url(r'^reset_password_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
+        PasswordResetConfirmView.as_view(), name='reset_password_confirm'),
+    url(r'^reset_password',
+        ResetPasswordRequestView.as_view(), name="password_reset"),
     url(r'^password_reset/done/$',
         auth_views.password_reset_done, {'template_name': 'authorization/password_reset_done.html'},
         name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        auth_views.password_reset_confirm, {'template_name': 'authorization/password_reset_confirm.html'},
-        name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete,
         {'template_name': 'authorization/password_reset_complete.html'}, name='password_reset_complete'),
     url(r'logout', logout, {"next_page": "/"}, name='logout'),
