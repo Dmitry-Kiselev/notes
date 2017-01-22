@@ -3,11 +3,12 @@ import json
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from  django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import default_token_generator
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.validators import validate_email
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 from django.utils.encoding import force_bytes
@@ -79,11 +80,12 @@ def auth(request, format=None):
 
 class ResetPasswordRequestView(FormView):
     """
-    password reset views are based on https://github.com/ruddra/django-reset-password,
-    but was highly simplified
+    password reset views are based on https://github.com/django/django/blob/master/django/contrib/auth/views.py
+    but was simplified and adapt ot operate json data
     """
-    success_url = '/'
+    success_url = '/auth/password_reset/done/'
     form_class = PasswordResetRequestForm
+    template_name = 'authorization/password_reset_form.html'
 
     @staticmethod
     def validate_email_address(email):
@@ -98,7 +100,7 @@ class ResetPasswordRequestView(FormView):
         c = {
             'email': user.email,
             'domain': request.META['HTTP_HOST'],
-            'site_name': 'your site',
+            'site_name': 'Notes',
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'user': user,
             'token': default_token_generator.make_token(user),
@@ -116,7 +118,8 @@ class ResetPasswordRequestView(FormView):
                   [user.email], fail_silently=False)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        user_data = json.loads(request.body.decode("utf-8"))
+        form = self.form_class(user_data)
         try:
             if form.is_valid():
                 data = form.cleaned_data["email"]
@@ -133,24 +136,27 @@ class ResetPasswordRequestView(FormView):
 
                     result = self.form_valid(form)
                     return result
-                result = self.form_invalid(form)
-                return result
+                else:
+                    return JsonResponse({'has_error': True, 'errors': 'There is no user registered using this email'})
+
         except Exception:
             pass
         return self.form_invalid(form)
 
 
 class PasswordResetConfirmView(FormView):
-    success_url = '/'
+    success_url = '/auth/reset/done/'
     form_class = SetPasswordForm
+    template_name = 'authorization/password_reset_confirm.html'
 
-    def post(self, request, uidb64=None, token=None, *arg, **kwargs):
+    def post(self, request, uidb64=None, token=None, **kwargs):
         """
         View that checks the hash in a password reset link and presents a
         form for entering a new password.
         """
         user_model = get_user_model()
-        form = self.form_class(request.POST)
+        user_data = json.loads(request.body.decode("utf-8"))
+        form = self.form_class(user_data)
         assert uidb64 is not None and token is not None  # checked by URLconf
         try:
             uid = urlsafe_base64_decode(uidb64)
@@ -161,6 +167,10 @@ class PasswordResetConfirmView(FormView):
         if user is not None and default_token_generator.check_token(user, token):
             if form.is_valid():
                 new_password = form.cleaned_data['new_password2']
+                try:
+                    validate_password(password=new_password, user=User)
+                except ValidationError as e:
+                    return JsonResponse({'has_error': True, 'errors': e.messages})
                 user.set_password(new_password)
                 user.save()
                 return self.form_valid(form)
@@ -168,3 +178,19 @@ class PasswordResetConfirmView(FormView):
                 return self.form_invalid(form)
         else:
             return self.form_invalid(form)
+
+    def get(self, request, uidb64=None, token=None, *arg, **kwargs):
+        form = SetPasswordForm()
+        user_model = get_user_model()
+        token_generator = default_token_generator
+        try:
+            uid = urlsafe_base64_decode(uidb64)
+            user = user_model._default_manager.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, user_model.DoesNotExist):
+            user = None
+        if user is not None and token_generator.check_token(user, token):
+            validlink = True
+        else:
+            validlink = False
+        assert uidb64 is not None and token is not None  # checked by URLconf
+        return render(request, 'authorization/password_reset_confirm.html', {'form': form, 'validlink': validlink})
