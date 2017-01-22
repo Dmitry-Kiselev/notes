@@ -27,7 +27,8 @@ class LoginForm(AuthenticationForm):
 
 
 class PasswordResetRequestForm(forms.Form):
-    email = forms.CharField(label=("Email"), max_length=254)
+    email = forms.EmailField(required=True,
+                             widget=forms.EmailInput(attrs={'ng-model': 'userdata.email', 'required': 'required'}))
 
 
 class SetPasswordForm(forms.Form):
@@ -39,9 +40,9 @@ class SetPasswordForm(forms.Form):
         'password_mismatch': ("The two password fields didn't match."),
     }
     new_password1 = forms.CharField(label=("New password"),
-                                    widget=forms.PasswordInput)
+                                    widget=forms.PasswordInput(attrs={'ng-model': 'userdata.new_password1'}))
     new_password2 = forms.CharField(label=("New password confirmation"),
-                                    widget=forms.PasswordInput)
+                                    widget=forms.PasswordInput(attrs={'ng-model': 'userdata.new_password2'}))
 
     def clean_new_password2(self):
         password1 = self.cleaned_data.get('new_password1')
