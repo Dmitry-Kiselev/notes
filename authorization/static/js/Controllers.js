@@ -32,4 +32,44 @@ angular.module('authApp')
             angular.element('#authModal').modal('open');
             $('ul.tabs').tabs();
         });
-    });
+    })
+
+    .controller('PasswordResetController', function ($scope, $http, $window) {
+
+        $scope.userdata = {};
+
+        $scope.submitEmail = function () {
+            $http.post('', $scope.userdata).then(
+                function (response) {
+                    if (response.data.has_error) {
+                        $scope.userdata.errors = response.data.errors;
+                        // Materialize.toast(message, displayLength, className, completeCallback);
+                        Materialize.toast($scope.userdata.errors, 10000); // 10000 is the duration of the toast
+                    }
+                    else {
+                        $('#content').html(response.data);
+                    }
+                }
+            );
+        };
+
+        $scope.passwordSubmit = function () {
+            $http.post('', $scope.userdata).then(
+                function (response) {
+                    if (response.data.has_error) {
+                        $scope.userdata.errors = response.data.errors;
+
+                        for (var error in $scope.userdata.errors) {
+                            // Materialize.toast(message, displayLength, className, completeCallback);
+                            Materialize.toast($scope.userdata.errors[error], 10000); // 10000 is the duration of the toast
+                        }
+                    }
+                    else {
+                        $('#content').html(response.data);
+                    }
+                }
+            );
+        }
+
+    })
+;
