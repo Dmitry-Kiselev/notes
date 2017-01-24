@@ -1,5 +1,9 @@
 # notes
 
+## Description ##
+
+Simple notes organizer with authorization and ability to share notes between users.
+
 ## Installation ##
 
 ### Install python dependencies ###
