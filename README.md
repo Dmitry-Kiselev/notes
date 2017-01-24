@@ -30,7 +30,4 @@ python manage.py migrate
 http://dmitrykiselev.pythonanywhere.com/
 
 
-## Known issues ##
-<ul>
-    <li>[authorization] sometimes it's quite difficult to get focus on username field. Probably related to django-material.</li>
-</ul>
+
